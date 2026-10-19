@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { PageHeader } from '@/components/page/page-header';
 import { SectionHeader } from '@/components/page/section-header';
 import { DocumentList } from '@/components/page/document-list';
-import { Button } from '@/components/ui/button';
 import { DOCUMENT_SECTIONS } from '@/lib/publications';
 
 export const metadata: Metadata = {
@@ -16,12 +16,16 @@ export default function AdminDocumentsPage() {
     <main id="main">
       <PageHeader
         title="Admin documents."
-        lede="The district’s working documents for club officers. Dates and deadlines are on the calendar."
-      >
-        <Button href="/calendar" tone="ghost">
-          The district calendar
-        </Button>
-      </PageHeader>
+        lede={
+          <>
+            Documents for club officers. Dates and deadlines are on the{' '}
+            <Link href="/calendar" className="text-accent-text underline underline-offset-3">
+              calendar
+            </Link>
+            .
+          </>
+        }
+      />
 
       {DOCUMENT_SECTIONS.map((s, i) => (
         <section

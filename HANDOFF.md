@@ -58,6 +58,23 @@ Requested by the user. Decisions were asked up front. Checked in Chrome at 1440�
   The order within each section is mine; Rotary International runs policy,
   then club documents, then the how-to guide. If the council
   re-uploads a file, its Drive ID changes and the link here must be updated.
+- **Calendar link:** the ghost "The district calendar" pill is off Admin
+  Documents. The lede is one line at 1440 ("Documents for club officers.
+  Dates and deadlines are on the calendar.") with "calendar" as an inline
+  `accent-text` link, at the user's choice.
+- **Copy pass (no-ai-slop):** a plain-language edit of public copy, keeping
+  every fact. In scope, at the user's choice: site copy plus the
+  descriptions of projects, events, avenues, the newsletter, Media Crew,
+  DIMUN and archive entries. Left as published: the two news posts, council
+  bios, Vision/Mission/Goals (the district's official statements), Rotary
+  themes, names, and archive role lists (their dashes separate role from
+  name). "Join a club" stays (DECISIONS §6). Main edits: the four project
+  descriptions (DIMUN, Race4Change, IBTS, Intercede); the newsletter intro and Media Crew
+  "about"; event and archive lines ("The culmination of…", "Recognising…",
+  "Empowering…"); "Sri Lankan heritage" for Awrudhu became "the Sinhala and
+  Tamil New Year"; the 404 lede no longer mentions the old site (DECISIONS
+  §8). `AVENUES` in `lib/site.ts` is not rendered anywhere, so it was left
+  alone.
 
 ### Hero artwork, Q1 timeline and project photos — 2026-10-14 (branch `content/hero-q1-timeline-project-photos`)
 Requested by the user, decisions asked up front in two rounds. Checked in

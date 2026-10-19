@@ -49,12 +49,12 @@ export const EVENT_PAGES: EventPage[] = [
     status: 'past',
     when: '2025 · Inaugural session',
     standfirst:
-      'The inaugural session of District Interact Model United Nations: a first edition meant to set a benchmark for Interact MUN conferences in Sri Lanka.',
+      'The first District Interact Model United Nations, held to set the standard for Interact MUN conferences in Sri Lanka.',
     about: {
       title: 'Why DIMUN exists.',
       body: [
-        'Youth movements in Sri Lanka often operate in isolation, with limited collaboration between different groups.',
-        'DIMUN brings the Interact and Model United Nations communities together. Interactors engage with local and global issues through debate, and MUN participants learn how service drives change.',
+        'Youth movements in Sri Lanka often work in isolation, with little collaboration between groups.',
+        'DIMUN brings the Interact and Model United Nations communities together. Interactors debate local and global issues, and MUN participants learn what community service can achieve.',
       ],
     },
     committees: {

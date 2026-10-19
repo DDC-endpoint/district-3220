@@ -7,7 +7,7 @@
  */
 export const MEDIA_CREW = {
   about:
-    'An initiative of Interact District 3220 to give every club equal access to media amenities and resources, on request, free or at a low cost, to the standard of leading media outlets.',
+    'Interact District 3220’s own media team. Any club can request it for an event, free or at low cost, and get work to the standard of a professional media outlet.',
   runBy:
     'Managed by the District Director of the Media Crew and staffed by volunteers from participating clubs.',
   logo: '/images/branding/media-crew-white-logo.png',

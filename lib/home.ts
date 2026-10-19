@@ -98,7 +98,7 @@ export const FLAGSHIPS: Flagship[] = [
     figure: '6',
     figureLabel: 'Committees',
     description:
-      'District Interact Model United Nations (DIMUN) is a conference organised by Interact District 3220 that brings together students from across Sri Lanka to debate global issues. Through meaningful dialogue and collaborative problem-solving, DIMUN develops communication, diplomacy, and leadership skills while inspiring young people to become informed, responsible global citizens.',
+      'District Interact Model United Nations (DIMUN) is a conference organised by Interact District 3220 where students from across Sri Lanka debate global issues in simulated UN committees. Delegates build their communication, diplomacy and leadership skills.',
     photos: [
       { image: dimunHall, alt: 'A full hall facing the DIMUN stage, lit in blue under the Rotary wheel' },
       { image: dimunPodium, alt: 'A delegate speaking from the podium at DIMUN' },
@@ -114,7 +114,7 @@ export const FLAGSHIPS: Flagship[] = [
     figure: '5 km',
     figureLabel: 'Charity run',
     description:
-      '“Race 4 Change” is a 5km charity run in Colombo raising funds, through the Little Hearts Foundation, to equip the newly built cardiac and critical care complex at Lady Ridgeway Hospital. This government-approved, nationally prioritised project often faces long timelines for completion, making community support essential.',
+      '“Race 4 Change” is a 5 km charity run in Colombo raising funds, through the Little Hearts Foundation, to equip the newly built cardiac and critical care complex at Lady Ridgeway Hospital. The complex is government-approved and a national priority, but projects like it often take a long time to finish without community support.',
     photos: [
       { image: r4cSprint, alt: 'Two runners sprinting across the grass at Race4Change' },
       { image: r4cStartArch, alt: 'Runners and the lion mascot gathering at the Race4Change start arch on Galle Face Green' },
@@ -130,7 +130,7 @@ export const FLAGSHIPS: Flagship[] = [
     slug: 'ibts',
     name: 'IBTS',
     description:
-      'The Interact Board Training Seminar is a programme organised by the Interact District Council to prepare newly elected Board Members through the year ahead, guiding them through their roles, responsibilities and duties as Interactors.',
+      'The Interact Board Training Seminar is a programme run by the Interact District Council for newly elected club board members. It prepares them for the year ahead and takes them through their roles, responsibilities and duties as Interactors.',
     photos: [
       { image: ibtsApplause, alt: 'Club officers applauding from their seats at the Interact Board Training Seminar' },
       { image: ibtsHall, alt: 'A speaker addressing a full hall under the IBTS title screen' },
@@ -143,7 +143,7 @@ export const FLAGSHIPS: Flagship[] = [
     slug: 'intercede',
     name: 'Intercede',
     description:
-      'Intercede is the biggest community service project carried out by Interact District 3220, Sri Lanka and Maldives. Held every Rotary year under the Community Service avenue of the District Council, it brings clubs from across the district together to deliver one sustainable project for a community in need. Each year, the project identifies an underserved school or community, looks at what it needs most, and puts Interactors on the ground to meet that need. More than a single act of giving, Intercede is built to leave something lasting behind, while giving Interactors the chance to serve beyond their own clubs and cities.',
+      'Intercede is the largest community service project of Interact District 3220, Sri Lanka and Maldives. Every Rotary year, under the District Council’s Community Service avenue, clubs from across the district work together on one sustainable project for a community in need. The project picks an underserved school or community, finds out what it needs most, and sends Interactors to do the work. Each project is meant to leave something that lasts, and lets Interactors serve beyond their own clubs and cities.',
     // TODO(district): Intercede's photographs. The zip supplied on 2026-10-14 was empty.
     photos: [],
     needsPhoto: true,
@@ -196,7 +196,7 @@ export const AVENUE_PANELS: AvenuePanel[] = [
     slug: 'community-service',
     name: 'Community Service',
     blurb:
-      'The heart and soul of the Interact movement.',
+      'Service projects for communities in need, the heart of the Interact movement.',
     logo: '/images/avenues/avenue-community-service.png',
     colour: '#D8951C',
     solid: '#906413',
@@ -253,7 +253,7 @@ export const AVENUE_PANELS: AvenuePanel[] = [
   {
     slug: 'finance',
     name: 'Finance',
-    blurb: 'Fundraisers that fund the projects of every other avenue.',
+    blurb: 'Fundraisers that pay for the projects of every other avenue.',
     logo: '/images/avenues/avenue-finance.png',
     colour: '#1B244A',
     onSolid: 'light',

@@ -23,7 +23,7 @@ export const NEWSLETTER = {
   name: 'This Quarter in Interact',
   wordmark: '/images/branding/newsletter-tqi-logo.png',
   intro:
-    'The Interact District Council’s official quarterly newsletter: a new initiative dedicated to strengthening communication, increasing awareness and celebrating the collective efforts of Interactors across the district.',
+    'The Interact District Council’s official quarterly newsletter, started to keep clubs informed and to share what Interactors across the district are doing.',
   covers: [
     'Highlights of district initiatives',
     'Upcoming projects, campaigns and service opportunities',
