@@ -4,7 +4,7 @@
 > **Captured:** 2026-06-15
 > **Purpose:** Complete content & structure reference for rebuilding the site with a modern, mobile-friendly design. Every page, section, text block, link, and image on the existing site is catalogued here. All new content will be layered on top of this baseline.
 >
-> **This is a snapshot of the old Wix site as it stood on 2026-06-15, mid-way through the 2025/26 Rotary year. Leave it as captured.** References below to the "current" council, theme ("Unite For Good") and events are 2025/26. The live facts are in the code: the 2026-27 theme is **"Create Lasting Impact"** (`lib/site.ts`), the 2025/26 council now lives in the archive (`/archives/council/2025-26`), and the 2026/27 council is pending (`lib/councils.ts`). Where the rebuilt site deliberately departs from this inventory, `design/DECISIONS.md` §8 and `HANDOFF.md` say why.
+> **This is a snapshot of the old Wix site as it stood on 2026-06-15, mid-way through the 2025/26 Rotary year. Leave it as captured.** References below to the "current" council, theme ("Unite For Good") and events are 2025/26. The live facts are in the code: the 2026-27 theme is **"Create Lasting Impact"** (`lib/site.ts`), the 2025/26 council now lives in the archive (`/archives/council/2025-26`), and the 2026/27 council is on the site (`lib/councils.ts`). Quoted text below is the old site's wording; the rebuilt site's copy was edited for plain language (2026-10-06 and 2026-10-19), so the code, not this file, holds the published wording. The admin documents the old site never exposed came from the council's Drive folders on 2026-10-19 (`DOCUMENT_SECTIONS` in `lib/publications.ts`). Where the rebuilt site deliberately departs from this inventory, `design/DECISIONS.md` §8 and `HANDOFF.md` say why.
 
 ---
 
@@ -585,7 +585,7 @@ Second-pass crawl complete. Remaining items need a manual check (JS-rendered or 
 
 1. ✅ **Archives sub-pages** — DONE. All 14 live year-pages crawled into [ARCHIVES.md](ARCHIVES.md). (Found: 2 broken index cards → 404, and a missing 1991/92.)
 2. ✅ **Blog post bodies** — DONE. Both full posts captured in §9.
-3. **Admin Documents** — the District Directory 2025/26 file URL is still missing. The other documents (20 files) came from the council's Drive folders on 2026-10-19 (`lib/publications.ts`).
+3. **Admin Documents** — the District Directory 2025/26 file URL and any other documents are JS-rendered; capture download links manually from the live page.
 4. **Calendar** — the actual events/dates live inside an embedded calendar widget (not in static HTML); export or transcribe manually.
 5. **Blocked image** — `dir-2016-17-chathula-fernando.jpg` (Wix id `9a1ed2_5cbbecbc2ffc4b499c770dd660d643e1~mv2.jpg`) returns **HTTP 403** on every path; the asset is removed/restricted on the CDN. Needs a fresh copy from the council.
 6. **Archives index council group photos** — `Council 24-25.jpg` … `Council 20-21.jpg` (the index card images) — Wix IDs still need capturing.

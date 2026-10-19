@@ -361,7 +361,8 @@ Placeholders render through `<Placeholder>` or carry `data-placeholder`, so
 the source for `Placeholder`, lists what is still missing.
 
 Since the launch-copy pass (2026-10-06) public pages carry no requests to the
-district and no notes about the old site. Three gaps still show a visible
+district and no notes about the old site; the plain-language pass
+(2026-10-19, DECISIONS §8) set the rules for any new copy. Three gaps still show a visible
 note, each waiting on content the user is sending: the IBTS and Intercede home
 tiles, and the District Directory and Newsletter files (items 4 and 8 below).
 
@@ -712,7 +713,7 @@ Prompts and settings for regenerating the background videos manually are in
 
 ### In progress / Next — remaining gaps (manual / JS-rendered)
 - ⏳ Re-source the one blocked Chathula Fernando 2016/17 portrait.
-- ⏳ Capture Admin Documents download URLs (District Directory 2025/26) — JS-rendered, not in HTML.
+- ⏳ Capture Admin Documents download URLs (District Directory 2025/26) — JS-rendered, not in HTML. *(2026-10-19: every other admin document is now on the site from the council's Drive; the directory is still missing.)*
 - ⏳ Export/transcribe the embedded **Calendar** widget events.
 - ⏳ Capture Archives *index* council group-photo image IDs (`Council 24-25.jpg` … `Council 20-21.jpg`).
 - ⏳ Verify the **1999/2000 council** roster (live page duplicates 1998/99).
@@ -784,6 +785,17 @@ reasoning is not lost. ARCHIVES.md has the source detail.
   Ladies College London A/L.
 
 ## Change log
+- **2026-10-19 (DM1 spelling, admin documents, copy)** — Branch
+  `content/dm1-spelling-admin-documents`: corrected 1st District Meeting
+  graphics on the home timeline ("KURUNAGALA" → "KURUNEGALA"); 20 admin
+  documents from the council's Drive in four sections; the Admin Documents
+  calendar pill replaced by an inline link; a plain-language pass over
+  public copy. DECISIONS §8 revision. See the first section under Current
+  Status.
+- **2026-10-14 (hero, Q1 timeline, project photos)** — PR #14. See Current
+  Status.
+- **2026-10-13 (avenue collages, council 2026/27)** — PR #13. See Current
+  Status.
 - **2026-10-06 (brand, nav, launch copy)** — Branch `polish/brand-nav-stack`:
   district and theme logos, hero wrap wipe, email-only contact, no nav
   dropdowns, College of DIRs under Archives, hydration fix, minor updates

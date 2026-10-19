@@ -21,6 +21,11 @@ approved revision (DECISIONS §6): the hero is one piece of district artwork
 with centred buttons, the project tiles carry real photographs, and the photo
 band is the quarterly timeline.
 
+`04`, `05` and `06` retaken 2026-10-19 from a production build after the
+1st District Meeting graphics were corrected and the plain-language copy
+pass (DECISIONS §8). `05` and `06` had still shown the pre-2026-10-06 header
+and closing copy. `01`–`03` are unchanged.
+
 These are
 the visual ground truth for `design/DECISIONS.md`: new pages should look like
 they belong next to these.

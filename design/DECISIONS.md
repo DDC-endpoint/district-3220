@@ -375,6 +375,20 @@ Every old Wix path 301s to its new URL (`next.config.ts`).
   to the district and no notes about the old site (HANDOFF keeps them).
   Copy is formal and plain; gaps still waiting on district content keep
   their `Placeholder` until it arrives.
+  **Revision 2026-10-19 (decided by the user): plain-language pass.** All
+  public copy was edited against the no-ai-slop rules, keeping every fact:
+  site copy plus the district-supplied descriptions of projects, events,
+  avenues, the newsletter, Media Crew, DIMUN and archive entries. Left as
+  published, and to stay that way unless the user says otherwise: news
+  posts, council bios, Vision/Mission/Goals (the district's official
+  statements), Rotary themes and names. New copy follows the same rules:
+  no puffery ("culmination", "empowering", "dedicated to"), no binary
+  contrasts, no em dashes in short copy. The edits are listed in HANDOFF.
+- **Admin Documents (2026-10-19, decided by the user):** four sections by
+  purpose (Bidding guidelines, Report formats, District guidelines, Rotary
+  International), each row opening its own file on the council's Drive. The
+  page header has no action pill: the calendar is an inline `accent-text`
+  link in a one-line lede.
 - **Council bios:** kept verbatim. The sharpest ones are listed in HANDOFF for the
   district to veto before launch.
 - **Council 2026/27:** structured placeholder grid of "To be announced" slots.
