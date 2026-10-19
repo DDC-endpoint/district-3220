@@ -585,7 +585,7 @@ Second-pass crawl complete. Remaining items need a manual check (JS-rendered or 
 
 1. ✅ **Archives sub-pages** — DONE. All 14 live year-pages crawled into [ARCHIVES.md](ARCHIVES.md). (Found: 2 broken index cards → 404, and a missing 1991/92.)
 2. ✅ **Blog post bodies** — DONE. Both full posts captured in §9.
-3. **Admin Documents** — the District Directory 2025/26 file URL and any other documents are JS-rendered; capture download links manually from the live page.
+3. **Admin Documents** — the District Directory 2025/26 file URL is still missing. The other documents (20 files) came from the council's Drive folders on 2026-10-19 (`lib/publications.ts`).
 4. **Calendar** — the actual events/dates live inside an embedded calendar widget (not in static HTML); export or transcribe manually.
 5. **Blocked image** — `dir-2016-17-chathula-fernando.jpg` (Wix id `9a1ed2_5cbbecbc2ffc4b499c770dd660d643e1~mv2.jpg`) returns **HTTP 403** on every path; the asset is removed/restricted on the CDN. Needs a fresh copy from the council.
 6. **Archives index council group photos** — `Council 24-25.jpg` … `Council 20-21.jpg` (the index card images) — Wix IDs still need capturing.
