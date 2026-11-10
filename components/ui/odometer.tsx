@@ -45,7 +45,9 @@ export function Odometer({ value, className = '' }: { value: string; className?:
             className="inline-block h-[1em] overflow-hidden text-center leading-none"
           >
             <span
-              className="block transition-transform duration-[1150ms] ease-out-expo"
+              // Reduced motion: the roll snaps, so the digits fade in at their
+              // final value instead of jumping from zero.
+              className={`block transition-transform duration-[1150ms] ease-out-expo ${shown ? '' : 'motion-reduce:opacity-0'}`}
               style={{
                 transform: shown ? `translateY(-${Number(char)}em)` : 'translateY(0em)',
                 transitionDelay: `${delay}ms`,

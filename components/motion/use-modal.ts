@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, type RefObject } from 'react';
+import { lockScroll } from './smooth-scroll';
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -12,10 +13,9 @@ const FOCUSABLE =
  *  - focus moves into the dialog on open and back to its trigger on close;
  *  - Tab and Shift+Tab stay inside the dialog (aria-modal promises this);
  *  - Escape closes it;
- *  - the page behind cannot scroll. `body { overflow: hidden }` alone is not
- *    enough on desktop, where Lenis scrolls with window.scrollTo and ignores
- *    it, so the overlay must ALSO carry `data-lenis-prevent` (Lenis then
- *    leaves wheel events over the dialog alone).
+ *  - the page behind cannot scroll: `lockScroll` hides body overflow and
+ *    stops Lenis. The overlay must ALSO carry `data-lenis-prevent`, so the
+ *    stopped Lenis leaves wheel events over the dialog to scroll it natively.
  *
  * The caller renders the overlay; this hook only wires behaviour.
  */
@@ -40,8 +40,7 @@ export function useModal({
   useEffect(() => {
     if (!open) return;
     const returnTo = latest.current.returnFocusTo();
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const unlock = lockScroll();
     (initialFocusRef?.current ?? panelRef.current)?.focus({ preventScroll: true });
 
     const onKey = (e: KeyboardEvent) => {
@@ -75,7 +74,7 @@ export function useModal({
     document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
+      unlock();
       returnTo?.focus({ preventScroll: true });
     };
   }, [open, panelRef, initialFocusRef]);

@@ -218,6 +218,46 @@ verified in the browser.
   white-on-accent hover fills changed to `accent-fill` per DECISIONS §2; the
   closing CTA's second button now goes to About, not a second link to Contact.
 
+### Contrast, click and motion audit — 2026-11-10 (branch `fix/audit-contrast-clicks-motion`)
+Requested by the user before hosting; scope set up front: the main pages
+(home, about, calendar, request a date, council, news, archives, one archive
+year, contact, media crew), WCAG AA in every state, fix bugs and ask on
+design. Checked in Chrome at 1440x900 and 390x844.
+- **Method:** axe colour-contrast at rest and with every control forced into
+  `:hover` and `:focus-visible`; a five-point hit test on every control for
+  anything covering it; text over photographs measured from screenshots with
+  the text hidden (5th-percentile pixel); frame timing, long animation frames
+  and layout shift while scrolling each page on the production build at 4x CPU
+  throttle. A read-only review of the motion code fed the fixes.
+- **Officers band:** the "two layers" were the tile's Signal fill plus the
+  parked cursor's white wash (white label ~4.1:1). The tiles dropped
+  `data-morph`; DECISIONS has the revision. Now 5.7:1.
+- **Contrast:** no failures at rest or on hover/focus on any page at either
+  size. One over-photo failure fixed: the Media Crew tile number (white/70)
+  fell to 4.24:1 on the brown Photography photo when another tile was open;
+  now white/90. Hero, project tiles, archive cards: 5.4:1 and up.
+- **Clicks:** nothing covers any control on any page. Calendar event links
+  get a 24px target (`min-h-6`, the archive pattern).
+- **Motion fixes:** the header rendered its transparent over-hero state on
+  every inner page until hydration (white logo flash on chalk); it is now
+  solid from the server render off home. The mobile drawer pushed the page
+  down 423px on open; it now hangs over it. `data-scroll-behavior="smooth"` on
+  `<html>` so Next 16 resets scroll instantly on navigation (phones animated
+  a scroll from the old position). `lockScroll()` in `smooth-scroll.tsx`
+  stops Lenis under dialogs and the drawer (a running ease kept moving the
+  page behind an opening dialog). Hash links settle Lenis. Calendar day
+  selection scrolls through Lenis. Avenue blurbs no longer rewrap during the
+  open; a second tap closes an avenue on Android. Project dialog corners stay
+  20px through the expand. The nav text-shadow fades with its colour.
+  Reduced motion: the calendar month wipe, odometer and DrawLine fade instead
+  of snapping.
+- **Measured smoothness:** no frame over 21ms, no long animation frames and
+  zero layout shift while scrolling home, archives, council and calendar at
+  4x CPU, desktop and phone.
+- **Not changed:** the project dialog's shared-element stretch (width and
+  height differ by about 6% for ~150ms) was left; moving the `layoutId` to
+  the cover image would change how the effect looks.
+
 ### Dependencies — 2026-11-10 (branch `fix/next-security-update`)
 `npm audit` flagged a critical advisory in Next 16.0.0–16.4.0 (unauthenticated
 RCE in the image optimizer with SVGs, and in `use cache` functions; DoS via

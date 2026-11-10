@@ -52,7 +52,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // Chrome extension) write attributes onto <html> before React hydrates.
     // It silences attribute mismatches on this one element only; anything
     // inside <body> still reports.
-    <html lang="en" className={`${fraunces.variable} ${instrument.variable}`} suppressHydrationWarning>
+    // data-scroll-behavior: Next 16 no longer turns `scroll-behavior: smooth`
+    // off during navigation unless asked. Without it, every route change and
+    // back/forward on phones (where Lenis is off) visibly scrolled from the
+    // old position instead of starting at the top.
+    <html lang="en" data-scroll-behavior="smooth" className={`${fraunces.variable} ${instrument.variable}`} suppressHydrationWarning>
       <body>
         <SmoothScroll />
         <MorphCursor />

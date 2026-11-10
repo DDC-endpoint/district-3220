@@ -92,7 +92,13 @@ export function AvenuesAccordion() {
             onFocus={() => locked === null && setHovered(i)}
             // Tabbing out must close what tabbing in opened.
             onBlur={() => locked === null && setHovered(null)}
-            onClick={() => setLocked((l) => (l === i ? null : i))}
+            onClick={() => {
+              // Closing must clear the focus/hover opener too: a tap focuses
+              // the row, so on Android a second tap unlocked it but `hovered`
+              // (set on focus) kept it open.
+              if (locked === i) setHovered(null);
+              setLocked((l) => (l === i ? null : i));
+            }}
             style={{
               ['--k' as string]: a.colour,
               // The band behind the white name: `solid` where the brand
@@ -163,9 +169,13 @@ export function AvenuesAccordion() {
                   isOpen ? 'mt-2 grid-rows-[1fr] opacity-100' : 'mt-0 grid-rows-[0fr] opacity-0'
                 }`}
               >
+                {/* From md the blurb is sized to the OPEN panel, not the
+                    growing one (the collage's trick), so its lines don't
+                    rewrap on every frame of the 750ms open. */}
                 <span
                   id={`avenue-${a.slug}-blurb`}
-                  className={`block max-w-[38ch] overflow-hidden text-[0.93rem] text-content-muted ${
+                  style={{ ['--blurb-w' as string]: `min(38ch, calc(${OPEN_WIDTH} - 2rem))` }}
+                  className={`block max-w-[38ch] overflow-hidden text-[0.93rem] text-content-muted md:w-[var(--blurb-w)] md:max-w-none ${
                     dark ? 'md:text-chalk-950/80' : 'md:text-white/90'
                   }`}
                 >

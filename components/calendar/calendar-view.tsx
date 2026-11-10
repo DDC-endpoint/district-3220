@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CalendarEvent } from '@/lib/ics';
 import { colomboDayKey, fromDayKey as fromKey, shiftDayKey } from '@/lib/colombo';
+import { scrollIntoViewSmooth } from '@/components/motion/smooth-scroll';
 
 /**
  * The district calendar in the house style: an agenda list (default, because
@@ -249,7 +250,7 @@ function EventList({ events, muted = false }: { events: CalendarEvent[]; muted?:
               {e.links.length > 0 && (
                 <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1">
                   {e.links.map((l) => (
-                    <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="text-sm font-medium text-accent-text underline-offset-3 hover:underline">
+                    <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="inline-flex min-h-6 items-center text-sm font-medium text-accent-text underline-offset-3 hover:underline">
                       {l.label}
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
@@ -307,8 +308,8 @@ function MonthGrid({
     const panel = panelRef.current;
     if (!selected || !panel) return;
     if (panel.getBoundingClientRect().bottom <= window.innerHeight) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    panel.scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+    // Through Lenis on desktop: a native smooth scroll fought its wheel ease.
+    scrollIntoViewSmooth(panel);
   }, [selected]);
 
   return (

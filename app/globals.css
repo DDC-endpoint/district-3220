@@ -585,7 +585,9 @@
     scroll-behavior: auto !important;
   }
   .rise-in-load,
-  .clip-in-load {
+  .clip-in-load,
+  .clip-in-next,
+  .clip-in-prev {
     animation: fade-in 200ms ease-out both !important;
     transform: none !important;
     clip-path: none !important;
