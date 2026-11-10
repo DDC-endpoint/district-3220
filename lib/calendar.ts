@@ -5,12 +5,16 @@ import { parseIcs, type CalendarEvent } from './ics';
 export type { CalendarEvent };
 
 /**
- * The district calendar, read from the council's public Google Calendar.
+ * The district calendar, read from the council's Google Calendar.
  *
- * Set DISTRICT_CALENDAR_ICS_URL to the calendar's "Public address in iCal
- * format" (Google Calendar → Settings → the calendar → Integrate calendar;
- * the calendar must be public). It is fetched on the server, because Google
- * does not allow browsers to read the feed directly, and refreshed hourly.
+ * Set DISTRICT_CALENDAR_ICS_URL to the calendar's "Secret address in iCal
+ * format" (Google Calendar → Settings → the calendar → Integrate calendar).
+ * The calendar stays private: the address is a credential that lives only in
+ * the server environment (Vercel), and the feed is fetched on the server and
+ * refreshed hourly, so it never reaches a browser. Never log or render it. If
+ * it leaks, reset it in the same Google setting and update the variable.
+ * (A public calendar's "Public address in iCal format" also works, if a
+ * Workspace admin has switched secret addresses off.)
  *
  * Until the URL is set, or if the feed fails, the page falls back to the
  * events recorded in lib/events.ts and says so, so it never renders broken.

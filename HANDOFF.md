@@ -26,9 +26,10 @@ These are the only items left. Everything else on the site is complete.
    closes (`TIMELINE` in `lib/home.ts`; one entry per quarter).
 3. **Admin documents:** the files for Admin Documents and the Newsletter
    (`lib/publications.ts`).
-4. **Calendar:** the district's public Google Calendar iCal URL, set as
-   `DISTRICT_CALENDAR_ICS_URL` on Vercel; until then the calendar shows
-   `lib/events.ts`.
+4. **Calendar:** the district Google Calendar's **secret** iCal address, set
+   as `DISTRICT_CALENDAR_ICS_URL` on Vercel; until then the calendar shows
+   `lib/events.ts`. The calendar stays private (decided 2026-11-10); the
+   officer's steps are under "To switch on at launch".
 
 ### Hero artwork, Q1 timeline and project photos — 2026-10-14 (branch `content/hero-q1-timeline-project-photos`)
 Requested by the user, decisions asked up front in two rounds. Checked in
@@ -251,8 +252,20 @@ uses the 5.x JS API. `npm audit` is clean.
 
 ### To switch on at launch
 - **Hosting is Vercel.** Set `DISTRICT_CALENDAR_ICS_URL` to the district
-  Google Calendar's public iCal address (see `.env.example`). Until then the
+  Google Calendar's secret iCal address (see `.env.example`). Until then the
   calendar shows the recorded events.
+- **Calendar address (decided 2026-11-10):** use the *secret* address, not a
+  public calendar. The site reads the feed on the server and has no
+  subscribe link, so the calendar never needs to be public; the address is
+  kept only in Vercel's environment variables. Steps for the calendar's
+  owner, on a computer (or a phone browser in "Desktop site" mode, not the
+  Calendar app): calendar.google.com → gear → Settings → under "Settings for
+  my calendars" the district calendar → Integrate calendar → copy "Secret
+  address in iCal format" (ends in `basic.ics`) → send it privately. Leave
+  "Make available to public" off. If the address leaks: "Reset" there, then
+  update the variable. If the account has no secret address (a Workspace
+  admin can disable it), fall back to a public calendar and its public
+  address.
 - Forms (Contact, Request a Date, Media Crew) open a
   pre-filled email to the district address. A real back-end later replaces
   only `send()` in `components/forms/mailto-form.tsx`.
@@ -270,7 +283,7 @@ tiles, and the Admin Documents and Newsletter files (items 4 and 8 below).
 ### Content to request from the district
 1. **2026/27 council bios** (roster and portraits arrived 2026-10-13) →
    `COUNCIL_2026_27` in `lib/councils.ts`.
-2. **Google Calendar** public iCal URL (and the calendar set to public).
+2. **Google Calendar** secret iCal address (the calendar stays private).
 3. **2026/27 news posts**; the two posts on the site are from July 2025.
 4. **Files** (the user is sending a link to all of them): First Quarterly
    Newsletter PDF, District Directory 2025/26, and any other admin documents

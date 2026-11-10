@@ -348,8 +348,10 @@ Every old Wix path 301s to its new URL (`next.config.ts`).
   validation from CONTENT.md, submitting by opening a pre-filled email to the
   district address. A real back-end later replaces only the submit handler.
 - **Calendar:** our own month + list calendar, styled in this system, reading the
-  district's public Google Calendar iCal feed from `DISTRICT_CALENDAR_ICS_URL`,
+  district's Google Calendar iCal feed from `DISTRICT_CALENDAR_ICS_URL`,
   refreshed hourly on the server. Falls back to `lib/events.ts` until the URL is set.
+  The feed is the calendar's *secret* address, so the calendar itself stays
+  private (2026-11-10).
 - **Hosting:** Vercel (Node runtime, ISR).
 - **DIMUN:** a reusable `/events/[slug]` template; DIMUN '25 is its first entry.
 - **Archive gaps:** every year appears. 2023/24, 2021/22 and 1991/92 get pages with
