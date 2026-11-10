@@ -218,6 +218,14 @@ verified in the browser.
   white-on-accent hover fills changed to `accent-fill` per DECISIONS §2; the
   closing CTA's second button now goes to About, not a second link to Contact.
 
+### Dependencies — 2026-11-10 (branch `fix/next-security-update`)
+`npm audit` flagged a critical advisory in Next 16.0.0–16.4.0 (unauthenticated
+RCE in the image optimizer with SVGs, and in `use cache` functions; DoS via
+Server Actions). Next 16.3.8 → 16.4.6, React/React DOM 19.3.0 → 19.3.1, floors
+raised in `package.json`. `npm audit` is clean; tsc and build pass; every main
+route, the Wix redirects and `/_next/image` (AVIF out) checked on `next start`
+at 1440×900 and 390×844. Must be merged before the first public deploy.
+
 ### Dependencies — 2026-10-06
 `npm audit fix` cleared 5 advisories, including a critical Next.js RCE on
 Windows-hosted servers and in the image optimizer: Next 16.2.12 → 16.3.8,
