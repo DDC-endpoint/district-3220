@@ -95,7 +95,7 @@ export function ServicesAccordion({ formId }: { formId: string }) {
               <span className="sr-only">{s.name}</span>
             </button>
 
-            <span className="label-micro pointer-events-none absolute top-3.5 left-4 z-20 text-white/70">
+            <span className="label-micro pointer-events-none absolute top-3.5 left-4 z-20 text-white/90">
               {String(i + 1).padStart(2, '0')}
               {locked === i && <span className="opacity-70"> locked</span>}
             </span>

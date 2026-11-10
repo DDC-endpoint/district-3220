@@ -282,6 +282,18 @@ design change (see the top of this file).
   - Parked on a tile inside a rounded, clipped container (the officers
     grid), the blob takes the container's radius on any corner it shares
     with it, so it never pokes a square corner past the curve (2026-10-06).
+- **Revision 2026-11-10 (approved by the user): officers tiles keep one hover
+  state.** The officers tiles no longer carry `data-morph`. Their hover is the
+  solid Signal fill alone, and the cursor shows its 36px ring over them, as
+  over any other large link. Parked on a filled tile, the dark-surface white
+  wash lightened `#155FD9` and dropped the white label to about 4.1:1 (AA
+  needs 4.5:1); the user saw it as two layers covering the button. Pill
+  buttons keep `data-morph`: they resolve to the light-surface treatment,
+  which darkens the fill, and measured 6.5:1 on hover.
+- **Revision 2026-11-10 (audit fix): mobile drawer.** The drawer hangs over
+  the page below the bar instead of pushing the page down, and has a hairline
+  on its bottom edge as well as its top so the menu's end reads against the
+  chalk page behind it. Same 280ms clip wipe.
 
 ### Motion map: where each effect runs
 
@@ -297,7 +309,7 @@ design change (see the top of this file).
 | Load fade-up | Every inner-page header | `rise-in-load`, CSS, from first paint |
 | Reveal fade-up + DrawLine | Section headings, rows, cards site-wide | Observer, once per element |
 | Morph Cursor | Sitewide, mouse only | Parks on `data-morph` pills and controls; grows into a 36px ring over every other link or button (logo included); white treatment over dark surfaces; releases on removal or scroll-away |
-| Header | Sitewide | Transparent over the hero, solid from the first scroll; spring underline on the active item; the mobile drawer opens on a 280ms tween. No dropdowns |
+| Header | Sitewide | Transparent over the hero on home, solid from the first scroll; solid from the server render on every other page; spring underline on the active item; the mobile drawer opens over the page on a 280ms tween. No dropdowns |
 
 ## 7. Never (each of these has been tried or proposed and rejected)
 

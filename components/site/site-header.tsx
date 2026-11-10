@@ -6,11 +6,12 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { NAV, SITE, type NavItem } from '@/lib/site';
+import { lockScroll } from '@/components/motion/smooth-scroll';
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const toggleRef = useRef<HTMLButtonElement | null>(null);
   const reduced = useReducedMotion();
 
@@ -21,22 +22,24 @@ export function SiteHeader() {
 
   /**
    * The bar is transparent while a full-screen hero owns the viewport, and
-   * turns solid once that hero starts to scroll. Pages without a hero mark
-   * (everything except home) get the solid bar immediately.
+   * turns solid once that hero starts to scroll. Only home has a hero, so
+   * every other page is solid from the server render on. (It used to start
+   * transparent everywhere and turn solid after hydration, which flashed the
+   * white over-hero logo and nav on chalk on every inner page.)
    *
    * Driven by an IntersectionObserver on a sentinel at the hero's bottom edge
    * rather than a scroll listener, so nothing runs per frame.
    */
+  const hasHero = pathname === '/';
+  const scrolled = !hasHero || pastHero;
   useEffect(() => {
+    if (!hasHero) return;
     const sentinel = document.querySelector('[data-hero-top]');
-    if (!sentinel) {
-      setScrolled(true);
-      return;
-    }
+    if (!sentinel) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         // Solid once the marker has passed up behind the bar.
-        setScrolled(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+        setPastHero(!entry.isIntersecting && entry.boundingClientRect.top < 0);
       },
       // No rootMargin: the marker sits 16px into the hero, so this flips on the
       // first real scroll rather than a bar-height later.
@@ -44,7 +47,7 @@ export function SiteHeader() {
     );
     io.observe(sentinel);
     return () => io.disconnect();
-  }, [pathname]);
+  }, [hasHero]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -62,11 +65,7 @@ export function SiteHeader() {
   // Lock body scroll behind the mobile drawer.
   useEffect(() => {
     if (!drawerOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = prev;
-    };
+    return lockScroll();
   }, [drawerOpen]);
 
   /**
@@ -150,7 +149,7 @@ export function SiteHeader() {
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
                     data-morph
-                    className={`press relative flex items-center rounded-full px-3.5 py-2 text-[13.5px] font-medium [--press-dur:300ms] ${
+                    className={`press relative flex items-center rounded-full px-3.5 py-2 text-[13.5px] font-medium [--press-dur:300ms] [--press-extra:text-shadow] ${
                       overHero
                         ? `[text-shadow:0_1px_8px_rgba(10,12,14,0.7)] ${
                             active ? 'text-white' : 'text-white/80 hover:text-white'
@@ -225,7 +224,10 @@ export function SiteHeader() {
             }
             // Capped and scrollable: the full nav is taller than a landscape
             // phone, and body scroll is locked while the drawer is open.
-            className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-hairline bg-bg lg:hidden"
+            // Absolute, hanging below the bar: in flow it pushed the whole
+            // page down by its height on open and jumped it back on close.
+            // The bottom hairline marks where the menu ends over the page.
+            className="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-y border-hairline bg-bg lg:hidden"
           >
             <nav aria-label="Primary (mobile)" className="container-page py-4">
               <ul className="flex flex-col">

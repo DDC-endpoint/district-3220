@@ -72,7 +72,8 @@ export function DrawLine({ className = '' }: { className?: string }) {
       ref={ref}
       aria-hidden="true"
       className={`h-px origin-left bg-navy-800/30 transition-transform duration-[900ms] ease-out-expo ${
-        shown ? 'scale-x-100' : 'scale-x-0'
+        // Reduced motion: no scale (it would snap); the line fades in instead.
+        shown ? 'scale-x-100' : 'scale-x-0 motion-reduce:scale-x-100 motion-reduce:opacity-0'
       } ${className}`}
     />
   );

@@ -31,10 +31,12 @@ export function OfficersBand() {
             <li key={l.href}>
               {/* The whole tile fills Signal on hover and focus. A tint was not
                   readable as a state change on a near-black band; a solid fill
-                  is unmistakable and reads as selection. */}
+                  is unmistakable and reads as selection. No `data-morph`: the
+                  fill is the hover state, and a parked cursor on top of it
+                  washed the blue out and lowered the white text's contrast.
+                  The cursor shows its link ring here instead. */}
               <Link
                 href={l.href}
-                data-morph
                 className="group block h-full bg-ink-panel px-6 py-7 transition-colors duration-200 hover:bg-accent-fill focus-visible:bg-accent-fill"
               >
                 <span className="block font-display text-base font-semibold tracking-[-0.01em] transition-colors duration-200 group-hover:text-white group-focus-visible:text-white">

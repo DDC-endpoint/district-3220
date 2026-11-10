@@ -56,6 +56,10 @@ export function ProjectGrid() {
                 }}
                 type="button"
                 layoutId={reduced ? undefined : `project-${f.slug}`}
+                // Inline, not only the rounded-panel class: Framer corrects a
+                // radius set in style for the shared-layout scale, so the
+                // corners stay 20px through the grow instead of shrinking.
+                style={{ borderRadius: 20 }}
                 onClick={() => {
                   setShown(0);
                   setOpenSlug(f.slug);
@@ -123,6 +127,7 @@ export function ProjectGrid() {
             <motion.div
               ref={panelRef}
               layoutId={reduced ? undefined : `project-${open.slug}`}
+              style={{ borderRadius: 20 }}
               role="dialog"
               aria-modal="true"
               aria-label={open.name}
