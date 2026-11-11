@@ -24,9 +24,8 @@ These are the only items left. Everything else on the site is complete.
    `FLAGSHIPS` (`lib/home.ts`), cover first, and drop `needsPhoto`.
 2. **Each new quarter's photographs** for the home timeline, as the quarter
    closes (`TIMELINE` in `lib/home.ts`; one entry per quarter).
-3. **Remaining files:** the District Directory (the one Admin Documents row
-   still showing "File to come") and the First Quarterly Newsletter
-   (`lib/publications.ts`). The other Admin Documents are on the site.
+3. **Remaining files:** the First Quarterly Newsletter
+   (`lib/publications.ts`). Every Admin Document is on the site.
 4. **Calendar:** the district Google Calendar's **secret** iCal address, set
    as `DISTRICT_CALENDAR_ICS_URL` on Vercel; until then the calendar shows
    `lib/events.ts`. The calendar stays private (decided 2026-11-10); the
@@ -47,8 +46,9 @@ Requested by the user. Decisions were asked up front. Checked in Chrome at 1440�
   on Drive (the user chose per-file Drive links over self-hosting). Every ID
   was checked to open the right file. Data: `DOCUMENT_SECTIONS` in
   `lib/publications.ts` (replaces `DOCUMENTS`). The old-site note on the
-  page is removed; the District Directory 2025/26 row keeps its "File to
-  come" pill.
+  page is removed. The District Directory row is removed too (2026-11-11,
+  the user's call): the directory sheet holds members' contact details, so it
+  is not linked from the public site.
 - **Judgement calls:** titles are the file names with typos fixed
   ("Biddding", "Guidlines", "202627" → 2026/27) and suffixes such as ".pdf" and "(RI BOD)"
   turned into plain titles; "Statement of Policy: Interact" carries "Adopted
@@ -362,17 +362,18 @@ the source for `Placeholder`, lists what is still missing.
 
 Since the launch-copy pass (2026-10-06) public pages carry no requests to the
 district and no notes about the old site; the plain-language pass
-(2026-10-19, DECISIONS §8) set the rules for any new copy. Three gaps still show a visible
+(2026-10-19, DECISIONS §8) set the rules for any new copy. These gaps still show a visible
 note, each waiting on content the user is sending: the IBTS and Intercede home
-tiles, and the District Directory and Newsletter files (items 4 and 8 below).
+tiles, and the Newsletter file (items 4 and 8 below).
 
 ### Content to request from the district
 1. **2026/27 council bios** (roster and portraits arrived 2026-10-13) →
    `COUNCIL_2026_27` in `lib/councils.ts`.
 2. **Google Calendar** secret iCal address (the calendar stays private).
 3. **2026/27 news posts**; the two posts on the site are from July 2025.
-4. **Files:** First Quarterly Newsletter PDF and District Directory
-   (`lib/publications.ts`). The other admin documents arrived 2026-10-19.
+4. **Files:** First Quarterly Newsletter PDF (`lib/publications.ts`). The
+   admin documents arrived 2026-10-19; the District Directory stays off the
+   site by choice (2026-11-11).
 5. **Archive gaps**: records for 2023/24, 2021/22 and 1991/92; the real
    1999/2000 council roster (the old page duplicated 1998/99's); anything for
    2001/02–2019/20, which never had archive pages.
@@ -713,7 +714,7 @@ Prompts and settings for regenerating the background videos manually are in
 
 ### In progress / Next — remaining gaps (manual / JS-rendered)
 - ⏳ Re-source the one blocked Chathula Fernando 2016/17 portrait.
-- ⏳ Capture Admin Documents download URLs (District Directory 2025/26) — JS-rendered, not in HTML. *(2026-10-19: every other admin document is now on the site from the council's Drive; the directory is still missing.)*
+- ✅ Admin Documents: every file is on the site from the council's Drive (2026-10-19). The District Directory is left off on purpose (2026-11-11): it holds members' contact details.
 - ⏳ Export/transcribe the embedded **Calendar** widget events.
 - ⏳ Capture Archives *index* council group-photo image IDs (`Council 24-25.jpg` … `Council 20-21.jpg`).
 - ⏳ Verify the **1999/2000 council** roster (live page duplicates 1998/99).

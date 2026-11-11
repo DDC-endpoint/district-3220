@@ -94,8 +94,8 @@ export const DOCUMENT_SECTIONS: DocumentSection[] = [
       { title: 'IWC Guidelines', kind: 'PDF', href: drive('1Y3AlbyaKHahFU6dZ2F9AsMX4TPzwo3Lo') },
       { title: 'Project Interlude ’26 Guidelines', kind: 'PDF', href: drive('1NoxULUKWPxQokeYWnE5kG-JkS0lcJ3ux') },
       { title: 'Rise Up', year: '2026/27', kind: 'PDF', href: drive('1u4YyYHEDFnaodDQ_g1_jUJ8v-LMi3hQT') },
-      // Not in either Drive folder. Still to be supplied (HANDOFF).
-      { title: 'District Directory', year: '2025/26', kind: 'PDF' },
+      // No District Directory row: the directory holds members' contact
+      // details, so it stays off the public site (the user, 2026-11-11).
     ],
   },
   {
