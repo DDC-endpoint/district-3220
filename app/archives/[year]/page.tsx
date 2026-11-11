@@ -50,7 +50,7 @@ export default async function ArchiveYearPage({ params }: { params: Promise<{ ye
               {y.dir && (
                 <div>
                   <dt className="label-micro text-content-soft">District Interact Representative</dt>
-                  <dd className="mt-1.5 font-display text-[1.3rem] leading-tight font-semibold">{y.dir}</dd>
+                  <dd className="mt-1.5 item-title text-item">{y.dir}</dd>
                 </div>
               )}
             </dl>
@@ -109,7 +109,7 @@ export default async function ArchiveYearPage({ params }: { params: Promise<{ ye
               >
                 <span className="label-micro pt-1.5 text-content-soft">{item.date ?? ''}</span>
                 <div>
-                  <h3 className="text-[1.15rem] leading-snug tracking-[-0.01em]">{item.title}</h3>
+                  <h3 className="item-title text-item">{item.title}</h3>
                   {item.body && <p className="mt-1.5 max-w-[68ch] text-content-muted">{item.body}</p>}
                   {item.link && (
                     <Link

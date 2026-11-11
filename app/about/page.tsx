@@ -42,7 +42,7 @@ export default function AboutPage() {
           {PURPOSE.map((p, i) => (
             <Reveal key={p.title} step={Math.min(i, 4)} as="li">
               <p className="label-micro text-content-soft">{String(i + 1).padStart(2, '0')}</p>
-              <h3 className="mt-3 text-[1.45rem] leading-tight tracking-[-0.015em]">{p.title}</h3>
+              <h3 className="mt-3 item-title text-item">{p.title}</h3>
               <p className="mt-3 max-w-[40ch] text-content-muted">{p.body}</p>
             </Reveal>
           ))}
@@ -119,7 +119,7 @@ export default function AboutPage() {
                 className="group flex h-full items-center justify-between gap-6 rounded-panel border border-hairline bg-surface p-6 transition-colors duration-200 hover:border-accent-fill md:flex-col md:items-stretch md:gap-10 md:p-7"
               >
                 <span>
-                  <span className="block font-display text-[1.35rem] leading-tight font-semibold tracking-[-0.015em]">
+                  <span className="block item-title text-item">
                     {l.label}
                   </span>
                   <span className="mt-2 block text-sm text-content-muted">{l.note}</span>

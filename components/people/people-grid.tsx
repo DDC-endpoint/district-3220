@@ -68,7 +68,7 @@ export function PeopleGrid({ people, scope }: { people: Person[]; scope: string 
                   <Portrait person={person} decorative sizes="(max-width: 640px) 46vw, (max-width: 1024px) 30vw, (max-width: 1280px) 22vw, 270px" />
                 </motion.span>
                 <span className="label-micro mt-3.5 block self-start text-content-soft">{person.position}</span>
-                <span className="mt-1.5 block self-start font-display text-[1.05rem] leading-snug font-semibold tracking-[-0.01em] transition-colors duration-200 group-hover:text-accent-text">
+                <span className="mt-1.5 block self-start item-title text-base leading-snug transition-colors duration-200 group-hover:text-accent-text">
                   {keepTogether(person.name)}
                 </span>
               </button>
@@ -192,7 +192,7 @@ function TbaCard({ person }: { person: Person }) {
         </svg>
       </div>
       <p className="label-micro mt-3.5 self-start text-content-soft">{person.position}</p>
-      <p className="mt-1.5 self-start font-display text-[1.05rem] leading-snug font-semibold text-content-soft">To be announced</p>
+      <p className="mt-1.5 self-start item-title text-base leading-snug text-content-soft">To be announced</p>
     </div>
   );
 }

@@ -129,13 +129,29 @@ and shook. Photo files: `public/images/avenues/<avenue>/`.
 
 | Role | Face | Spec |
 |---|---|---|
-| Display / headings (h1–h4) | **Fraunces 600** | Never heavier than 600: it tips into "over the top". `text-display`: clamp(2.35rem, 5.2vw, 4.6rem), leading 1.06, tracking −0.02em. `text-title`: clamp(1.6rem, 3.1vw, 2.5rem), leading 1.1, tracking −0.018em. |
+| Display / headings (h1–h4) | **Fraunces 600** | Never heavier than 600: it tips into "over the top". `text-display`: clamp(2.35rem, 5.2vw, 4.6rem), leading 1.06, tracking −0.02em. `text-title`: clamp(1.9rem, 3.1vw, 2.5rem), leading 1.1, tracking −0.018em. |
 | Body, nav, buttons | **Instrument Sans** | 400 body at leading 1.6; 500–600 for nav and buttons |
 | Micro-labels | system monospace, uppercase | The `label-micro` utility only: 0.65rem, tracking 0.14em. Numbering (`01`, `02`), captions, stat labels, tile meta. |
 
 Section headings are full sentences ending in a full stop
 ("Five avenues of service.", "For Interactors and club officers."), capped at
 `max-w-[20ch]`, followed by one muted sentence at `max-w-[56ch]`.
+
+**Revision 2026-11-11 (requested and approved by the user): heading
+hierarchy.** Sub-headings read too close to section headings: both were
+Fraunces 600, with only the size differing (about 1.6rem against 1.3rem on a
+phone). Two changes, across every page including home:
+- **Item titles move to the body face.** The name of a document, person,
+  event, project, committee, avenue, service or card is set with the
+  `item-title` utility (Instrument Sans 600, tracking −0.01em) at `text-item`
+  (1.125rem, leading 1.3), or a local size where the card calls for it
+  (officer and council names `text-base`, project tiles 1.25rem, accordions
+  keep their open and closed sizes). Fraunces now means a heading: page and
+  section titles, sub-section headings such as "Coming up" and council group
+  names, dialog titles, news post headlines, years and numerals, and italic
+  themes and quotes.
+- **`text-title` phone floor 1.6rem to 1.9rem:** clamp(1.9rem, 3.1vw,
+  2.5rem). The desktop size is unchanged.
 
 ## 4. Shape and layout
 

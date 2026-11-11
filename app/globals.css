@@ -82,9 +82,17 @@
   --text-display--line-height: 1.06;
   --text-display--letter-spacing: -0.02em;
 
-  --text-title: clamp(1.6rem, 3.1vw, 2.5rem);
+  /* Phone floor 1.9rem (was 1.6rem), so a section heading stands clear of
+     the item titles under it (DECISIONS §3, revision 2026-11-11). */
+  --text-title: clamp(1.9rem, 3.1vw, 2.5rem);
   --text-title--line-height: 1.1;
   --text-title--letter-spacing: -0.018em;
+
+  /* Item titles: the names of things in lists, cards and grids. Set in the
+     body face by `item-title`, so Fraunces reads as a heading and nothing
+     else (DECISIONS §3, revision 2026-11-11). */
+  --text-item: 1.125rem;
+  --text-item--line-height: 1.3;
 
   --text-micro: 0.65rem;
   --text-micro--line-height: 1.2;
@@ -289,6 +297,16 @@
   line-height: 1.2;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+/* Item title: Instrument Sans 600 for the name of a document, person, event,
+   project or card. Size comes from `text-item` (or a local size where the
+   card calls for it). Fraunces is kept for page, section and sub-section
+   headings, dialog titles, years and numerals, and italic quotes. */
+@utility item-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 /* The blueprint ground: a faint measured grid, masked so it fades out rather

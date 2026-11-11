@@ -50,7 +50,7 @@ export function CommitteeGrid({ items, scope }: { items: Committee[]; scope: str
                 <Image src={c.logo} alt="" fill sizes="(max-width: 768px) 44vw, (max-width: 1024px) 30vw, 200px" className="object-contain p-5 transition-[scale] duration-[600ms] ease-out-expo group-hover:scale-[1.04] motion-reduce:group-hover:scale-100" />
               </motion.span>
               <span className="label-micro mt-4 block text-content-soft">{String(i + 1).padStart(2, '0')}</span>
-              <span className="mt-1.5 block font-display text-[1.25rem] leading-tight font-semibold tracking-[-0.015em]">{c.code}</span>
+              <span className="mt-1.5 block item-title text-item">{c.code}</span>
               <span className="mt-1 block text-sm text-content-muted">{c.name}</span>
             </button>
           </li>

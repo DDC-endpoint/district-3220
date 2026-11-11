@@ -240,7 +240,7 @@ function EventList({ events, muted = false }: { events: CalendarEvent[]; muted?:
             </p>
             <div className="min-w-0">
               {/* Feed text is unbounded; long words and bare URLs must wrap. */}
-              <h3 className={`text-[1.2rem] leading-snug tracking-[-0.01em] [overflow-wrap:anywhere] ${muted ? 'text-content-muted' : ''}`}>{e.title}</h3>
+              <h3 className={`item-title text-item [overflow-wrap:anywhere] ${muted ? 'text-content-muted' : ''}`}>{e.title}</h3>
               <p className="label-micro mt-2 text-content-soft">
                 {[fmt({ weekday: 'long' }).format(d), timeLabel(e), e.location].filter(Boolean).join(' · ')}
               </p>

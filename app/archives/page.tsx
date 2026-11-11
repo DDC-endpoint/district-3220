@@ -112,7 +112,7 @@ export default function ArchivesPage() {
                   </span>
                   <span className="pb-1">
                     <span className="label-micro block text-content-soft">{c.label}</span>
-                    <span className="mt-2 block font-display text-[1.3rem] leading-tight font-semibold tracking-[-0.015em]">
+                    <span className="mt-2 block item-title text-item">
                       Council {c.label}
                     </span>
                     {/* Theme and DIR on their own lines: run together they
@@ -163,7 +163,7 @@ export default function ArchivesPage() {
                 <span className="label-micro block text-content-soft">
                   {FIRST_DIR_YEAR} to today · {DIRS.length} terms
                 </span>
-                <span className="mt-2 block font-display text-[1.3rem] leading-tight font-semibold tracking-[-0.015em]">
+                <span className="mt-2 block item-title text-item">
                   The full timeline
                 </span>
               </span>
