@@ -105,7 +105,7 @@ export function ServicesAccordion({ formId }: { formId: string }) {
                 the top, printing over the index label. */}
             <div className="pointer-events-none relative z-20 flex h-full min-h-[96px] flex-col justify-end p-4 text-white md:min-h-0 md:p-5">
               <p
-                className={`font-display font-semibold tracking-[-0.015em] [overflow-wrap:anywhere] ${
+                className={`item-title [overflow-wrap:anywhere] ${
                   isOpen ? 'text-[1.35rem] md:text-[clamp(1.2rem,1.8vw,1.6rem)]' : 'text-[1.1rem] md:text-[0.9rem] md:leading-snug'
                 }`}
               >
