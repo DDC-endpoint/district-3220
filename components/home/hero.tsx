@@ -52,7 +52,10 @@ export function Hero() {
       </h1>
 
       <div className="clip-in-load relative mt-16 aspect-video md:mt-18 lg:absolute lg:inset-0 lg:mt-0 lg:aspect-auto">
-        <Image src={HERO.image} alt={HERO.alt} fill preload sizes={sizes} className="object-cover" />
+        {/* The LCP. fetchPriority rather than `preload`, as the Next 16 docs
+            advise: the preload link went out at Low priority and queued
+            behind the header logos on a throttled phone. */}
+        <Image src={HERO.image} alt={HERO.alt} fill loading="eager" fetchPriority="high" sizes={sizes} className="object-cover" />
         <div aria-hidden="true" className="absolute inset-0 hidden lg:block" style={{ backgroundImage: HERO_SCRIM }} />
       </div>
 

@@ -3,6 +3,7 @@ import { Fraunces, Instrument_Sans } from 'next/font/google';
 import './globals.css';
 import { SmoothScroll } from '@/components/motion/smooth-scroll';
 import { MorphCursor } from '@/components/motion/morph-cursor';
+import { MotionProvider } from '@/components/motion/motion-provider';
 import { SiteHeader } from '@/components/site/site-header';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SITE } from '@/lib/site';
@@ -66,9 +67,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <SiteHeader />
-        {children}
-        <SiteFooter />
+        <MotionProvider>
+          <SiteHeader />
+          {children}
+          <SiteFooter />
+        </MotionProvider>
       </body>
     </html>
   );

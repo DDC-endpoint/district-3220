@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { useModal } from '@/components/motion/use-modal';
 import type { Committee } from '@/lib/event-pages';
@@ -46,9 +46,9 @@ export function CommitteeGrid({ items, scope }: { items: Committee[]; scope: str
               aria-haspopup="dialog"
               className="group flex h-full w-full flex-col rounded-panel border border-hairline bg-surface p-4 text-left transition-colors duration-200 hover:border-accent-fill md:p-5"
             >
-              <motion.span layoutId={layoutKey(i)} className="relative block aspect-[4/3] w-full overflow-hidden rounded-media bg-chalk-50">
+              <m.span layoutId={layoutKey(i)} className="relative block aspect-[4/3] w-full overflow-hidden rounded-media bg-chalk-50">
                 <Image src={c.logo} alt="" fill sizes="(max-width: 768px) 44vw, (max-width: 1024px) 30vw, 200px" className="object-contain p-5 transition-[scale] duration-[600ms] ease-out-expo group-hover:scale-[1.04] motion-reduce:group-hover:scale-100" />
-              </motion.span>
+              </m.span>
               <span className="label-micro mt-4 block text-content-soft">{String(i + 1).padStart(2, '0')}</span>
               <span className="mt-1.5 block font-display text-[1.25rem] leading-tight font-semibold tracking-[-0.015em]">{c.code}</span>
               <span className="mt-1 block text-sm text-content-muted">{c.name}</span>
@@ -59,7 +59,7 @@ export function CommitteeGrid({ items, scope }: { items: Committee[]; scope: str
 
       <AnimatePresence>
         {open && openIndex !== null && (
-          <motion.div
+          <m.div
             data-lenis-prevent
             className="fixed inset-0 z-80 flex items-center justify-center p-4 md:p-10"
             initial={{ opacity: 0 }}
@@ -77,9 +77,9 @@ export function CommitteeGrid({ items, scope }: { items: Committee[]; scope: str
               className="relative grid max-h-full w-full max-w-3xl overflow-y-auto overscroll-contain rounded-panel bg-navy-900 text-white sm:grid-cols-2"
             >
               <div className="p-4 sm:p-6">
-                <motion.div layoutId={layoutKey(openIndex)} className="relative aspect-[4/3] w-full overflow-hidden rounded-media bg-chalk-50 sm:aspect-square">
+                <m.div layoutId={layoutKey(openIndex)} className="relative aspect-[4/3] w-full overflow-hidden rounded-media bg-chalk-50 sm:aspect-square">
                   <Image src={open.logo} alt={`${open.name} emblem`} fill sizes="(max-width: 640px) 90vw, 360px" className="object-contain p-8" />
-                </motion.div>
+                </m.div>
               </div>
               <div className="flex flex-col p-6 pt-2 sm:pt-6 md:p-10">
                 <p className="label-micro text-accent">{open.code}</p>
@@ -113,7 +113,7 @@ export function CommitteeGrid({ items, scope }: { items: Committee[]; scope: str
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

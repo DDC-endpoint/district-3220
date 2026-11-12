@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 /**
  * Morph cursor (lab.damiandc.com/morph-cursor).
@@ -23,7 +24,12 @@ import { useEffect, useRef } from 'react';
  *  - it parks only on control-sized elements. Without the cap it inflated to
  *    cover a 140x520 accordion panel and fought that panel's own hover;
  *  - position is written straight to the element inside rAF and never through
- *    React state, which would re-render the tree on every mouse move.
+ *    React state, which would re-render the tree on every mouse move;
+ *  - the loop sleeps once the blob has settled. A still pointer used to cost
+ *    a style write, and so a whole rendered frame, 60 times a second for as
+ *    long as the page was open: on a slow laptop that was a steady share of
+ *    the main thread spent drawing nothing new. Any pointer, key, scroll,
+ *    resize or route change wakes it.
  *
  * Styles for each state live in globals.css under `.morph-cursor`.
  */
@@ -42,6 +48,12 @@ const FOLLOW_TAU = 22;
 const PARK_TAU = 45;
 /** Minimum gap between hit tests while scrolling (see the loop). */
 const RESCAN_MS = 100;
+/**
+ * How long the blob must sit still, its target unmoved, before the loop
+ * sleeps. Long enough to cover a control that starts moving a beat after the
+ * input that woke the loop (a press, a staggered transition).
+ */
+const SETTLE_MS = 300;
 const CLICKABLE ='a[href], button:not(:disabled), [role="button"], summary';
 
 type Mode = 'dot' | 'park' | 'link';
@@ -113,6 +125,14 @@ function onDarkBackground(el: Element | null): boolean {
 
 export function MorphCursor() {
   const ref = useRef<HTMLDivElement | null>(null);
+  /** Restarts the loop; set while the cursor is running. */
+  const wakeRef = useRef<() => void>(() => {});
+  const pathname = usePathname();
+
+  // A route change can remove the parked control without any pointer event.
+  useEffect(() => {
+    wakeRef.current();
+  }, [pathname]);
 
   useEffect(() => {
     const el = ref.current;
@@ -140,6 +160,12 @@ export function MorphCursor() {
     let lastScan = 0;
     let frame = 0;
     let last = performance.now();
+    /** Last values written to the element, so a still blob writes nothing. */
+    let shownX = NaN;
+    let shownY = NaN;
+    /** The target's rect last frame, to tell when it has stopped moving. */
+    let lastRect = '';
+    let stillSince = 0;
 
     const setMode = (next: Mode, nextTarget: HTMLElement | null) => {
       target = nextTarget;
@@ -183,12 +209,14 @@ export function MorphCursor() {
     const onMove = (e: PointerEvent) => {
       pointerX = e.clientX;
       pointerY = e.clientY;
+      wake();
     };
 
     const loop = (now: number) => {
       // Clamped so a backgrounded tab returning doesn't count as one huge step.
       const dt = Math.min(now - last, 64);
       last = now;
+      let moving = rescan;
 
       // Scrolling moves content under a still pointer without a pointerover,
       // so look again — but at most every RESCAN_MS. elementFromPoint and the
@@ -223,41 +251,90 @@ export function MorphCursor() {
         el.dataset.tone = dark ? 'dark' : 'light';
       }
 
+      let goalX = pointerX;
+      let goalY = pointerY;
+      let tau = FOLLOW_TAU;
       if (mode === 'park' && target) {
         // Re-measured each frame so the blob tracks elements that move or
         // resize under it, such as an accordion panel opening.
         const r = target.getBoundingClientRect();
-        const k = 1 - Math.exp(-dt / PARK_TAU);
-        x += (r.left + r.width / 2 - x) * k;
-        y += (r.top + r.height / 2 - y) * k;
-      } else {
-        const k = 1 - Math.exp(-dt / FOLLOW_TAU);
-        x += (pointerX - x) * k;
-        y += (pointerY - y) * k;
+        goalX = r.left + r.width / 2;
+        goalY = r.top + r.height / 2;
+        tau = PARK_TAU;
+        const rect = `${r.left},${r.top},${r.width},${r.height}`;
+        if (rect !== lastRect) {
+          lastRect = rect;
+          moving = true;
+        }
       }
-      el.style.translate = `${x}px ${y}px`;
+      const k = 1 - Math.exp(-dt / tau);
+      x += (goalX - x) * k;
+      y += (goalY - y) * k;
+      if (Math.abs(goalX - x) < 0.1 && Math.abs(goalY - y) < 0.1) {
+        x = goalX;
+        y = goalY;
+      } else {
+        moving = true;
+      }
+      if (x !== shownX || y !== shownY) {
+        shownX = x;
+        shownY = y;
+        el.style.translate = `${x}px ${y}px`;
+      }
+
+      if (moving) stillSince = now;
+      if (now - stillSince >= SETTLE_MS) {
+        frame = 0;
+        return;
+      }
       frame = requestAnimationFrame(loop);
     };
-    frame = requestAnimationFrame(loop);
 
-    const onOver = (e: PointerEvent) => resolve(e.target as Element | null);
+    const wake = () => {
+      if (frame) return;
+      // Restart the clock, so the sleep doesn't count as one long step.
+      last = performance.now();
+      stillSince = last;
+      frame = requestAnimationFrame(loop);
+    };
+    wakeRef.current = wake;
+    wake();
+
+    const onOver = (e: PointerEvent) => {
+      resolve(e.target as Element | null);
+      wake();
+    };
     // Leaving the document entirely: relatedTarget is null.
     const onOut = (e: PointerEvent) => {
       if (!e.relatedTarget) resolve(null);
+      wake();
     };
     const onScroll = () => {
       rescan = true;
+      wake();
     };
-    const onBlur = () => resolve(null);
+    const onBlur = () => {
+      resolve(null);
+      wake();
+    };
 
     window.addEventListener('pointermove', onMove, { passive: true });
     document.addEventListener('pointerover', onOver);
     document.addEventListener('pointerout', onOut);
     window.addEventListener('scroll', onScroll, { passive: true, capture: true });
     window.addEventListener('blur', onBlur);
+    // Presses and keys can move or remove the parked control (a dialog
+    // opening, Escape closing one) without the pointer moving.
+    window.addEventListener('pointerdown', wake, { passive: true });
+    window.addEventListener('keydown', wake);
+    window.addEventListener('resize', wake);
 
     return () => {
       cancelAnimationFrame(frame);
+      wakeRef.current = () => {};
+      window.removeEventListener('pointerdown', wake);
+      window.removeEventListener('keydown', wake);
+      window.removeEventListener('resize', wake);
       window.removeEventListener('pointermove', onMove);
       document.removeEventListener('pointerover', onOver);
       document.removeEventListener('pointerout', onOut);

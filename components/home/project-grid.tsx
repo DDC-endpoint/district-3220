@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { useModal } from '@/components/motion/use-modal';
 import { FLAGSHIPS } from '@/lib/home';
@@ -50,7 +50,7 @@ export function ProjectGrid() {
           const cover = f.photos[0];
           return (
             <li key={f.slug}>
-              <motion.button
+              <m.button
                 ref={(el) => {
                   tiles.current[f.slug] = el;
                 }}
@@ -99,7 +99,7 @@ export function ProjectGrid() {
                     </span>
                   )}
                 </span>
-              </motion.button>
+              </m.button>
             </li>
           );
         })}
@@ -107,7 +107,7 @@ export function ProjectGrid() {
 
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             data-lenis-prevent
             className="fixed inset-0 z-80 flex items-center justify-center p-4 md:p-10"
             initial={{ opacity: 0 }}
@@ -124,7 +124,7 @@ export function ProjectGrid() {
               onClick={() => setOpenSlug(null)}
               className="absolute inset-0 bg-chalk-950/70"
             />
-            <motion.div
+            <m.div
               ref={panelRef}
               layoutId={reduced ? undefined : `project-${open.slug}`}
               style={{ borderRadius: 20 }}
@@ -208,8 +208,8 @@ export function ProjectGrid() {
                   </button>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { useModal } from '@/components/motion/use-modal';
 import { DEFAULT_FOCUS, type Person } from '@/lib/people';
@@ -59,14 +59,14 @@ export function PeopleGrid({ people, scope }: { people: Person[]; scope: string 
                 aria-haspopup="dialog"
                 className={`group w-full text-left ${CARD}`}
               >
-                <motion.span
+                <m.span
                   layoutId={layoutKey(i)}
                   className="relative block aspect-[4/5] self-start overflow-hidden rounded-media bg-sunk"
                 >
                   {/* alt="" in the card: the button already reads the name and
                       position, so a portrait alt would say the name twice. */}
                   <Portrait person={person} decorative sizes="(max-width: 640px) 46vw, (max-width: 1024px) 30vw, (max-width: 1280px) 22vw, 270px" />
-                </motion.span>
+                </m.span>
                 <span className="label-micro mt-3.5 block self-start text-content-soft">{person.position}</span>
                 <span className="mt-1.5 block self-start font-display text-[1.05rem] leading-snug font-semibold tracking-[-0.01em] transition-colors duration-200 group-hover:text-accent-text">
                   {keepTogether(person.name)}
@@ -79,7 +79,7 @@ export function PeopleGrid({ people, scope }: { people: Person[]; scope: string 
 
       <AnimatePresence>
         {open && openIndex !== null && (
-          <motion.div
+          <m.div
             data-lenis-prevent
             className="fixed inset-0 z-80 flex items-center justify-center p-4 md:p-10"
             initial={{ opacity: 0 }}
@@ -102,12 +102,12 @@ export function PeopleGrid({ people, scope }: { people: Person[]; scope: string 
               aria-labelledby={`person-${scope}-name`}
               className="relative grid max-h-full w-full max-w-3xl overflow-y-auto overscroll-contain rounded-panel bg-navy-900 text-white sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]"
             >
-              <motion.div
+              <m.div
                 layoutId={layoutKey(openIndex)}
                 className="relative aspect-[4/5] max-h-[46svh] w-full overflow-hidden sm:max-h-none"
               >
                 <Portrait person={open} sizes="(max-width: 640px) 100vw, 340px" dark />
-              </motion.div>
+              </m.div>
               <div className="flex flex-col p-6 md:p-10">
                 <p className="label-micro text-accent">{open.position}</p>
                 <h3
@@ -130,7 +130,7 @@ export function PeopleGrid({ people, scope }: { people: Person[]; scope: string 
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

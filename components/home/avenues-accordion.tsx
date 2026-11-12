@@ -115,7 +115,7 @@ export function AvenuesAccordion() {
           >
             {/* Phone: logo in a fixed column. */}
             <span className="grid place-items-center p-3.5 md:hidden">
-              <Image src={a.logo} alt="" width={160} height={160} className="max-h-[54px] w-auto object-contain" />
+              <Image src={a.logo} alt="" width={54} height={54} className="max-h-[54px] w-auto object-contain" />
             </span>
 
             {/* Phone: the number, top right of the row. 60% with black clears
