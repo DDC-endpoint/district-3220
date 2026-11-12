@@ -16,7 +16,7 @@ export default function ContactPage() {
     <main id="main">
       <PageHeader
         title="Contact the council."
-        lede="For questions, partnership enquiries or starting an Interact club at your school, write to the council. Your message will be passed to the officer responsible."
+        lede="For questions, partnership enquiries or starting an Interact club at your school, write to the council. The council passes each message to the officer responsible."
       />
 
       <section aria-label="Contact" className="container-page grid gap-14 py-14 md:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] md:gap-16 md:py-20">

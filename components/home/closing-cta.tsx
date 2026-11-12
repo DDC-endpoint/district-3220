@@ -19,7 +19,7 @@ export function ClosingCta({ aboutLink = true }: { aboutLink?: boolean }) {
         </h2>
         <p className="mt-4 max-w-[54ch] text-white/75">
           Write to the council with your school’s name and the students who are interested. The
-          council will guide you through chartering a new Interact club.
+          council will take you through chartering a new Interact club.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button href="/contact" tone="onInk">

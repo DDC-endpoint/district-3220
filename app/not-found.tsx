@@ -9,7 +9,7 @@ export default function NotFound() {
     <main id="main">
       <PageHeader
         title="Page not found."
-        lede="There is no page at this address. Links from the previous district website redirect automatically, but this one could not be matched."
+        lede="There is no page at this address."
       >
         <Button href="/">Back to the home page</Button>
         <Button href="/archives" tone="ghost">

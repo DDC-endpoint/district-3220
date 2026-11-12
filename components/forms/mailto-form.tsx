@@ -172,7 +172,7 @@ export function MailtoForm({
         {copy === 'copied'
           ? 'Message copied.'
           : copy === 'failed'
-            ? 'Couldn’t copy — select the text above and copy it.'
+            ? 'Couldn’t copy. Select the text above and copy it.'
             : ''}
       </p>
     </div>

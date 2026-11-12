@@ -36,7 +36,7 @@ export const EVENTS: DistrictEvent[] = [
     date: '2026-04-11',
     venue: 'Maliyadeva College, Kurunegala',
     summary:
-      'Eight Interact clubs collaborated to celebrate Sri Lankan heritage together.',
+      'Eight Interact clubs celebrated the Sinhala and Tamil New Year together.',
     albumUrl: 'https://www.facebook.com/share/p/1BDVQydQ4T/',
   },
   {
@@ -45,7 +45,7 @@ export const EVENTS: DistrictEvent[] = [
     date: '2026-03-29',
     venue: 'Royal Institute Auditorium, Colombo',
     summary:
-      'The culmination of a four-month leadership training programme run across four zones.',
+      'The close of a four-month leadership training programme run across four zones.',
     albumUrl: 'https://www.facebook.com/share/p/1Nxv9A32Ds/',
   },
   {
@@ -54,7 +54,7 @@ export const EVENTS: DistrictEvent[] = [
     date: '2026-02-28',
     venue: 'Hillwood College, Kandy',
     summary:
-      'Recognising what clubs achieved across the year’s district initiatives.',
+      'Awards for what clubs achieved in the year’s district initiatives.',
     albumUrl: 'https://www.facebook.com/share/p/18fVmNuRnn/',
   },
   {
@@ -63,7 +63,7 @@ export const EVENTS: DistrictEvent[] = [
     date: null,
     venue: 'Trace Expert City, Colombo',
     summary:
-      'Empowering young women through leadership and advocacy.',
+      'An initiative for young women on leadership and advocacy.',
     registerUrl: 'https://forms.gle/V7iwqdaCWE5WRUJ58',
   },
   {
@@ -72,7 +72,7 @@ export const EVENTS: DistrictEvent[] = [
     date: null,
     venue: null,
     summary:
-      'A historic archive book charting the district’s history, presented to PRIP Stephanie A. Urchick and District Governor Delvin Pereira.',
+      'A book of the district’s history, presented to PRIP Stephanie A. Urchick and District Governor Delvin Pereira.',
     registerUrl: 'https://forms.gle/DKgQHfoxcm93LyJz5',
   },
 ];

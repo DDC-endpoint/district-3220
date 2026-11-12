@@ -8,14 +8,14 @@
 
 ---
 
-## Current Status — 2026-10-14
+## Current Status — 2026-10-19
 
 **Phase:** The whole site is built and merged to `main` (PRs #2–#8), then
 audited end to end (below). Every page in CONTENT.md exists on the locked
 design system (`design/DECISIONS.md`; §6 has the motion map, §8 the
 site-build decisions).
 
-### Remaining before launch (as of 2026-10-14, set by the user)
+### Remaining before launch (as of 2026-10-19, set by the user)
 These are the only items left. Everything else on the site is complete.
 1. **Intercede's photographs** for its project tile and dialog. The zip
    supplied on 2026-10-14 was empty; the user is re-sending it. Until then
@@ -24,12 +24,57 @@ These are the only items left. Everything else on the site is complete.
    `FLAGSHIPS` (`lib/home.ts`), cover first, and drop `needsPhoto`.
 2. **Each new quarter's photographs** for the home timeline, as the quarter
    closes (`TIMELINE` in `lib/home.ts`; one entry per quarter).
-3. **Admin documents:** the files for Admin Documents and the Newsletter
-   (`lib/publications.ts`).
+3. **Remaining files:** the First Quarterly Newsletter
+   (`lib/publications.ts`). Every Admin Document is on the site.
 4. **Calendar:** the district Google Calendar's **secret** iCal address, set
    as `DISTRICT_CALENDAR_ICS_URL` on Vercel; until then the calendar shows
    `lib/events.ts`. The calendar stays private (decided 2026-11-10); the
    officer's steps are under "To switch on at launch".
+
+### 1st District Meeting spelling and Admin Documents — 2026-10-19 (branch `content/dm1-spelling-admin-documents`)
+Requested by the user. Decisions were asked up front. Checked in Chrome at 1440×900 and 390×844.
+- **Timeline:** both 1st District Meeting graphics on the home timeline read
+  "KURUNAGALA". They are replaced with the user's corrected files ("1st DM
+  2.png" → `q1-district-meeting-1-address.jpg`, "1st DM 3.png" →
+  `q1-district-meeting-1-group.jpg`), resized to the existing 1800×1200
+  and left uncropped. The user's third file (the collaring shot) is left out, at
+  the user's choice: every event keeps two plates.
+- **Admin Documents:** 20 files from the council's two Drive folders
+  ("Interact District Guidelines & Documents", "RI Admin Documents"), in four
+  sections grouped by purpose, as the user chose: Bidding guidelines, Report
+  formats, District guidelines, Rotary International. Each row opens its file
+  on Drive (the user chose per-file Drive links over self-hosting). Every ID
+  was checked to open the right file. Data: `DOCUMENT_SECTIONS` in
+  `lib/publications.ts` (replaces `DOCUMENTS`). The old-site note on the
+  page is removed. The District Directory row is removed too (2026-11-11,
+  the user's call): the directory sheet holds members' contact details, so it
+  is not linked from the public site.
+- **Judgement calls:** titles are the file names with typos fixed
+  ("Biddding", "Guidlines", "202627" → 2026/27) and suffixes such as ".pdf" and "(RI BOD)"
+  turned into plain titles; "Statement of Policy: Interact" carries "Adopted
+  by the RI Board of Directors." from its file name. Acronyms (IDC, IU, DMC,
+  IWC) are kept as the council wrote them; "Rise Up" has no description
+  because nothing says what it is. Section ledes are one plain line each.
+  The order within each section is mine; Rotary International runs policy,
+  then club documents, then the how-to guide. If the council
+  re-uploads a file, its Drive ID changes and the link here must be updated.
+- **Calendar link:** the ghost "The district calendar" pill is off Admin
+  Documents. The lede is one line at 1440 ("Documents for club officers.
+  Dates and deadlines are on the calendar.") with "calendar" as an inline
+  `accent-text` link, at the user's choice.
+- **Copy pass (no-ai-slop):** a plain-language edit of public copy, keeping
+  every fact. In scope, at the user's choice: site copy plus the
+  descriptions of projects, events, avenues, the newsletter, Media Crew,
+  DIMUN and archive entries. Left as published: the two news posts, council
+  bios, Vision/Mission/Goals (the district's official statements), Rotary
+  themes, names, and archive role lists (their dashes separate role from
+  name). "Join a club" stays (DECISIONS §6). Main edits: the four project
+  descriptions (DIMUN, Race4Change, IBTS, Intercede); the newsletter intro and Media Crew
+  "about"; event and archive lines ("The culmination of…", "Recognising…",
+  "Empowering…"); "Sri Lankan heritage" for Awrudhu became "the Sinhala and
+  Tamil New Year"; the 404 lede no longer mentions the old site (DECISIONS
+  §8). `AVENUES` in `lib/site.ts` is not rendered anywhere, so it was left
+  alone.
 
 ### Hero artwork, Q1 timeline and project photos — 2026-10-14 (branch `content/hero-q1-timeline-project-photos`)
 Requested by the user, decisions asked up front in two rounds. Checked in
@@ -316,18 +361,19 @@ Placeholders render through `<Placeholder>` or carry `data-placeholder`, so
 the source for `Placeholder`, lists what is still missing.
 
 Since the launch-copy pass (2026-10-06) public pages carry no requests to the
-district and no notes about the old site. Three gaps still show a visible
+district and no notes about the old site; the plain-language pass
+(2026-10-19, DECISIONS §8) set the rules for any new copy. These gaps still show a visible
 note, each waiting on content the user is sending: the IBTS and Intercede home
-tiles, and the Admin Documents and Newsletter files (items 4 and 8 below).
+tiles, and the Newsletter file (items 4 and 8 below).
 
 ### Content to request from the district
 1. **2026/27 council bios** (roster and portraits arrived 2026-10-13) →
    `COUNCIL_2026_27` in `lib/councils.ts`.
 2. **Google Calendar** secret iCal address (the calendar stays private).
 3. **2026/27 news posts**; the two posts on the site are from July 2025.
-4. **Files** (the user is sending a link to all of them): First Quarterly
-   Newsletter PDF, District Directory 2025/26, and any other admin documents
-   (`lib/publications.ts`).
+4. **Files:** First Quarterly Newsletter PDF (`lib/publications.ts`). The
+   admin documents arrived 2026-10-19; the District Directory stays off the
+   site by choice (2026-11-11).
 5. **Archive gaps**: records for 2023/24, 2021/22 and 1991/92; the real
    1999/2000 council roster (the old page duplicated 1998/99's); anything for
    2001/02–2019/20, which never had archive pages.
@@ -668,7 +714,7 @@ Prompts and settings for regenerating the background videos manually are in
 
 ### In progress / Next — remaining gaps (manual / JS-rendered)
 - ⏳ Re-source the one blocked Chathula Fernando 2016/17 portrait.
-- ⏳ Capture Admin Documents download URLs (District Directory 2025/26) — JS-rendered, not in HTML.
+- ✅ Admin Documents: every file is on the site from the council's Drive (2026-10-19). The District Directory is left off on purpose (2026-11-11): it holds members' contact details.
 - ⏳ Export/transcribe the embedded **Calendar** widget events.
 - ⏳ Capture Archives *index* council group-photo image IDs (`Council 24-25.jpg` … `Council 20-21.jpg`).
 - ⏳ Verify the **1999/2000 council** roster (live page duplicates 1998/99).
@@ -740,6 +786,17 @@ reasoning is not lost. ARCHIVES.md has the source detail.
   Ladies College London A/L.
 
 ## Change log
+- **2026-10-19 (DM1 spelling, admin documents, copy)** — Branch
+  `content/dm1-spelling-admin-documents`: corrected 1st District Meeting
+  graphics on the home timeline ("KURUNAGALA" → "KURUNEGALA"); 20 admin
+  documents from the council's Drive in four sections; the Admin Documents
+  calendar pill replaced by an inline link; a plain-language pass over
+  public copy. DECISIONS §8 revision. See the first section under Current
+  Status.
+- **2026-10-14 (hero, Q1 timeline, project photos)** — PR #14. See Current
+  Status.
+- **2026-10-13 (avenue collages, council 2026/27)** — PR #13. See Current
+  Status.
 - **2026-10-06 (brand, nav, launch copy)** — Branch `polish/brand-nav-stack`:
   district and theme logos, hero wrap wipe, email-only contact, no nav
   dropdowns, College of DIRs under Archives, hydration fix, minor updates
