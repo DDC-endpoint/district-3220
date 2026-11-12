@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
 import { NAV, SITE, type NavItem } from '@/lib/site';
 import { lockScroll } from '@/components/motion/smooth-scroll';
 
@@ -115,22 +115,27 @@ export function SiteHeader() {
               divider. Over the hero it is the white reverse, with the same
               shadow as the nav text: the cyan with a dark halo read muddy on
               the photographs. The two cross-fade with the bar, in the nav
-              text's 300ms. */}
+              text's 300ms.
+              width/height are the displayed size at md (48px tall), not the
+              1034x380 file: next/image builds its 1x/2x candidates from
+              them, and the file's own width sent a 1920px logo to phones.
+              Eager rather than preloaded, so on the home page two logo
+              preloads don't queue ahead of the hero artwork (the LCP). */}
           <span className="relative block">
             <Image
               src="/images/branding/interact-district-3220-logo.png"
               alt=""
-              width={1034}
-              height={380}
-              preload
+              width={131}
+              height={48}
+              loading="eager"
               className={`h-10 w-auto transition-opacity duration-300 md:h-12 ${overHero ? 'opacity-0' : 'opacity-100'}`}
             />
             <Image
               src="/images/branding/interact-district-3220-logo-white.png"
               alt=""
-              width={1034}
-              height={380}
-              preload
+              width={131}
+              height={48}
+              loading="eager"
               className={`absolute inset-0 h-10 w-auto drop-shadow-[0_1px_8px_rgba(10,12,14,0.7)] transition-opacity duration-300 md:h-12 ${
                 overHero ? 'opacity-100' : 'opacity-0'
               }`}
@@ -161,7 +166,7 @@ export function SiteHeader() {
                   >
                     {item.label}
                     {active && (
-                      <motion.span
+                      <m.span
                         layoutId="nav-active"
                         className="absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-accent"
                         transition={
@@ -201,7 +206,7 @@ export function SiteHeader() {
       {/* ---------- mobile drawer ---------- */}
       <AnimatePresence>
         {drawerOpen && (
-          <motion.div
+          <m.div
             id="mobile-nav"
             data-cursor="light"
             // Lenis would otherwise eat wheel input meant for the drawer's
@@ -246,7 +251,7 @@ export function SiteHeader() {
                 ))}
               </ul>
             </nav>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </header>

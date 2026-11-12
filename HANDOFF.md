@@ -259,6 +259,36 @@ design. Checked in Chrome at 1440x900 and 390x844.
   height differ by about 6% for ~150ms) was left; moving the `layoutId` to
   the cover image would change how the effect looks.
 
+### Performance on slow devices — 2026-11-12 (branch `perf/smooth-on-slow-devices`)
+Traced on `next start` (production build) in Chrome: phone at 390×844, DPR 3,
+4× CPU, Slow 4G; slow laptop at 1440×900, 6× CPU. No visual or motion change;
+every effect runs as before.
+- **Home LCP 2639 → 2317 ms** on the phone profile. The hero artwork now
+  loads at `fetchPriority="high"` (its `preload` link went out at Low and
+  queued behind two header-logo preloads). CLS 0.
+- **Logos at their real size.** Header and footer logos and the Rotary theme
+  mark declared the files' pixel sizes (1034×380, 918×509), so next/image sent
+  1280–1920px images into 40–56px slots on every page. They now declare the
+  displayed size and load at 256/360px. The phone avenue logos likewise.
+- **Framer Motion loads lazily.** `motion.*` became `m.*` under
+  `MotionProvider` (`LazyMotion`, `strict`), and the layout features arrive as
+  their own chunk after hydration: first-load JS (module scripts) 206 → 183 KB
+  gzipped on every page. A stray `motion.*` now throws in development; use
+  `m.*`.
+- **Nothing runs while nothing moves.** The morph cursor wrote its position
+  every frame even with the pointer still, and Lenis kept a frame loop alive
+  between scrolls, so a laptop rendered frames for as long as the page was
+  open. Both loops now sleep once settled and wake on input (pointer, wheel,
+  key, scroll, resize, route change). Idle main-thread work on the laptop
+  profile: 513 ms → 10 ms per 2 s. Wheel easing is unchanged, including the
+  first notch after a sleep.
+- Checked and already fine: scrolling every main page on the phone profile
+  produced no long tasks; the avenue accordion, project and council dialogs
+  and the drawer open without dropped frames once the page has settled;
+  `ical.js` stays server-only. Not done, on purpose: `experimental.inlineCss`
+  (duplicates the 72 KB stylesheet into every HTML response for about one
+  round trip on Vercel's HTTP/2).
+
 ### Dependencies — 2026-11-10 (branch `fix/next-security-update`)
 `npm audit` flagged a critical advisory in Next 16.0.0–16.4.0 (unauthenticated
 RCE in the image optimizer with SVGs, and in `use cache` functions; DoS via
@@ -387,9 +417,9 @@ tiles, and the Admin Documents and Newsletter files (items 4 and 8 below).
 1. Image pipeline: the council portraits are 2–6MB originals (~290MB total).
    `next/image` resizes them on Vercel, but pre-sizing them would cut build and
    cold-cache cost.
-2. A throttled-mobile performance trace on a production deploy (Lighthouse
-   accessibility, best-practices and SEO are done; performance needs a real
-   build on Vercel, not the dev server).
+2. Re-run the throttled-mobile trace on the Vercel deploy (done locally on
+   `next start`, 2026-11-12, above; Vercel adds HTTP/2 and its image CDN,
+   which should only improve it).
 3. Optional: reflect the calendar's view and month in the URL so it can be
    linked to.
 

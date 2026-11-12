@@ -15,8 +15,9 @@ export function SiteFooter() {
             <Image
               src="/images/branding/interact-district-3220-logo.png"
               alt={SITE.name}
-              width={1034}
-              height={380}
+              // Displayed size (h-14), so the srcset matches it (site-header).
+              width={152}
+              height={56}
               className="h-14 w-auto"
             />
             <p className="mt-4 max-w-[34ch] text-sm text-content-muted">
@@ -30,8 +31,8 @@ export function SiteFooter() {
               <Image
                 src="/images/branding/create-lasting-impact.png"
                 alt={SITE.rotaryTheme}
-                width={918}
-                height={509}
+                width={87}
+                height={48}
                 className="h-12 w-auto"
               />
               <p className="text-[11px] leading-snug font-semibold tracking-[0.12em] text-content-muted uppercase">

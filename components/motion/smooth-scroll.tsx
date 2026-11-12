@@ -25,6 +25,8 @@ const settle = (lenis: Lenis) => lenis.scrollTo(window.scrollY, { immediate: tru
 
 /** The running instance, or null on touch, under reduced motion and on the server. */
 let active: Lenis | null = null;
+/** Restarts the frame loop after a programmatic smooth scroll. */
+let wakeActive = () => {};
 let locks = 0;
 let prevOverflow = '';
 
@@ -67,6 +69,7 @@ export function scrollIntoViewSmooth(el: HTMLElement) {
     const r = el.getBoundingClientRect();
     // block: 'nearest' for an element below the fold: bring its bottom edge up.
     active.scrollTo(window.scrollY + r.bottom - window.innerHeight + 24);
+    wakeActive();
   } else {
     el.scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
   }
@@ -91,12 +94,25 @@ export function SmoothScroll() {
     active = lenis;
     if (locks > 0) lenis.stop();
 
+    // The frame loop runs only while Lenis is easing. Lenis needs frames for
+    // nothing else (native scrolling and resizes are event-driven), and an
+    // always-on loop kept a slow laptop rendering frames for as long as the
+    // page was open, scrolling or not. Every smooth scroll begins with a
+    // wheel event (Lenis's `virtual-scroll`) or our own scrollTo, which wake
+    // it. `time = 0` makes the first frame after a sleep advance by nothing
+    // rather than by the whole sleep, which would end the ease at once.
     let frame = 0;
     const raf = (time: number) => {
       lenis.raf(time);
+      frame = lenis.isScrolling === 'smooth' ? requestAnimationFrame(raf) : 0;
+    };
+    const wake = () => {
+      if (frame) return;
+      lenis.time = 0;
       frame = requestAnimationFrame(raf);
     };
-    frame = requestAnimationFrame(raf);
+    wakeActive = wake;
+    const offVirtual = lenis.on('virtual-scroll', wake);
 
     // Stop the ease the moment a link is followed, so the old page doesn't
     // keep scrolling while the new one loads. In-page hash links (#projects,
@@ -116,6 +132,8 @@ export function SmoothScroll() {
 
     return () => {
       document.removeEventListener('click', onClick, true);
+      offVirtual();
+      wakeActive = () => {};
       cancelAnimationFrame(frame);
       lenis.destroy();
       lenisRef.current = null;
