@@ -31,6 +31,24 @@ These are the only items left. Everything else on the site is complete.
    `lib/events.ts`. The calendar stays private (decided 2026-11-10); the
    officer's steps are under "To switch on at launch".
 
+### Heading hierarchy — 2026-11-11 (branch `design/heading-hierarchy`)
+Requested by the user: sub-headings read too close to section headings.
+Decisions were asked up front. Checked in Chrome at 1440×900 and 390×844.
+- **Item titles in the body face:** new `item-title` utility (Instrument
+  Sans 600) and `text-item` size (1.125rem) in `app/globals.css`, applied to
+  the names of documents, people, events, projects, committees, avenues,
+  services and link cards on every page, home included. Fraunces is kept for
+  page, section and sub-section headings, dialog titles, news headlines,
+  years and numerals, and italic themes.
+- **`text-title` phone floor** 1.6rem to 1.9rem; desktop unchanged.
+- **Recorded** as a dated revision in DECISIONS §3; reference shots `02`,
+  `03`, `05` retaken.
+- **Judgement calls:** years ("1964", "2025/26") and big numerals stay in
+  Fraunces, as numerals are part of its display role ("Q1" on the timeline).
+  The contact page's email link is unchanged: it is a link, not a title.
+  Officer and council names use `text-base`, project tiles 1.25rem, and the
+  two accordions keep their own sizes.
+
 ### 1st District Meeting spelling and Admin Documents — 2026-10-19 (branch `content/dm1-spelling-admin-documents`)
 Requested by the user. Decisions were asked up front. Checked in Chrome at 1440×900 and 390×844.
 - **Timeline:** both 1st District Meeting graphics on the home timeline read

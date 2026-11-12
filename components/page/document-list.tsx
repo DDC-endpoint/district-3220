@@ -21,7 +21,7 @@ export function DocumentList({ items }: { items: Publication[] }) {
           className="flex flex-col gap-4 border-b border-hairline py-6 sm:flex-row sm:items-center sm:justify-between"
         >
           <div>
-            <p className="font-display text-[1.3rem] leading-tight font-semibold tracking-[-0.015em]">
+            <p className="item-title text-item">
               {doc.title}
               {doc.year ? ` ${doc.year}` : ''}
             </p>

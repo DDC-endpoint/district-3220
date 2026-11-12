@@ -109,7 +109,7 @@ function Term({ term }: { term: DirTerm }) {
             theme reads as a second voice beside the person, not a footnote. */}
         <div className="min-w-0 flex-1 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-10">
           <div>
-            <h3 className="text-[1.2rem] leading-snug tracking-[-0.01em] md:text-[1.3rem]">{keepTogether(term.name)}</h3>
+            <h3 className="item-title text-item">{keepTogether(term.name)}</h3>
             {term.school && <p className="mt-0.5 text-sm text-content-muted">{keepTogether(term.school)}</p>}
             {term.partner && (
               <p className="label-micro mt-3 text-content-soft">

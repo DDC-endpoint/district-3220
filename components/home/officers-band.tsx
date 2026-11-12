@@ -39,7 +39,7 @@ export function OfficersBand() {
                 href={l.href}
                 className="group block h-full bg-ink-panel px-6 py-7 transition-colors duration-200 hover:bg-accent-fill focus-visible:bg-accent-fill"
               >
-                <span className="block font-display text-base font-semibold tracking-[-0.01em] transition-colors duration-200 group-hover:text-white group-focus-visible:text-white">
+                <span className="block item-title text-base transition-colors duration-200 group-hover:text-white group-focus-visible:text-white">
                   {l.label}
                 </span>
                 <span className="label-micro mt-2 block text-on-ink-muted transition-colors duration-200 group-hover:text-white/85 group-focus-visible:text-white/85">

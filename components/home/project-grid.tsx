@@ -90,7 +90,7 @@ export function ProjectGrid() {
                   <span className="label-micro text-white/70">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span className="mt-2 font-display text-[1.35rem] leading-tight font-semibold tracking-[-0.02em]">
+                  <span className="mt-2 item-title text-[1.25rem] leading-tight">
                     {f.name}
                   </span>
                   {f.figure && (
