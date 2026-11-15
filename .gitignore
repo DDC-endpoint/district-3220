@@ -48,3 +48,6 @@ yarn-error.log*
 /.wrangler/
 .dev.vars*
 !.dev.vars.example
+# build-time variables for `npm run cf-build` (the calendar address); read
+# only into the build's environment, never bundled. See .env.example.
+.env.build
