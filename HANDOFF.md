@@ -30,10 +30,10 @@ These are the only items left. Everything else on the site is complete.
    feed. The secret iCal address is a Worker secret (runtime) and is in the
    git-ignored `.env.build` (build time); see "Calendar" under "To switch on
    at launch".
-5. **Cloudflare setup** (added 2026-11-15): deployed 2026-11-15 to
-   https://district-3220.website-interactdistrict3220.workers.dev. Left: the
-   custom domain (the user is doing this; steps under "Custom domain" in "To
-   switch on at launch").
+5. ~~**Cloudflare setup**~~ Done 2026-11-15: live at
+   https://www.interactdistrict3220.org (details under "Custom domain" in "To
+   switch on at launch"). Left: submit the sitemap in Google Search Console
+   and cancel the Wix plan.
 
 ### Heading hierarchy reaches `main` — 2026-11-15 (branch `fix/heading-hierarchy-on-main`)
 PR #19 (below) was merged into `content/dm1-spelling-admin-documents` ten
@@ -531,30 +531,35 @@ uses the 5.x JS API. `npm audit` is clean.
   update the variable. If the account has no secret address (a Workspace
   admin can disable it), fall back to a public calendar and its public
   address.
-- **Custom domain (the user is doing this, 2026-11-15).** The zone
-  `interactdistrict3220.org` is already on Cloudflare DNS. The site's
-  canonical address is `https://www.interactdistrict3220.org` (`SITE.url` in
-  `lib/site.ts`; metadata, sitemap and robots use it), so `www` serves the
-  site and the bare domain redirects to it.
-  1. DNS → Records: delete the old Wix records for `@` and `www` only (A,
-     AAAA or CNAME pointing at Wix). Keep MX and TXT records.
-  2. Workers & Pages → `district-3220` → Settings → Domains & Routes → Add →
-     Custom domain: `www.interactdistrict3220.org`, then again for
-     `interactdistrict3220.org`. Cloudflare creates the DNS records and the
-     certificates (a few minutes).
-  3. Rules → Redirect Rules → create a rule (or the "Redirect from root to
-     WWW" template): hostname equals `interactdistrict3220.org` → dynamic
-     redirect to `concat("https://www.interactdistrict3220.org",
-     http.request.uri.path)`, 301, preserve query string.
-  4. SSL/TLS → Edge Certificates → Always Use HTTPS: on.
-  5. Check https://www.interactdistrict3220.org, that the bare domain
-     redirects, and an old Wix link (`/blog` → `/news`).
-  Then: add both domains to `wrangler.jsonc` (`routes` with
-  `custom_domain: true`) so the config matches the dashboard, set
-  `workers_dev: false` and `preview_urls: false` so the workers.dev address
-  stops serving a duplicate copy, redeploy, and submit
-  `https://www.interactdistrict3220.org/sitemap.xml` in Google Search
-  Console. Keep the Wix plan until the new domain is confirmed, then cancel it.
+- **Custom domain (done 2026-11-15).** The domain is registered at
+  Squarespace; only its DNS moved to Cloudflare (Squarespace → custom
+  nameservers `ingrid.ns.cloudflare.com`, `pedro.ns.cloudflare.com`; DNSSEC
+  off). The canonical address is `https://www.interactdistrict3220.org`
+  (`SITE.url` in `lib/site.ts`; metadata, sitemap and robots use it).
+  - Old Wix records (three A on `@`, CNAME `www` → `cdn3.wixdns.net`) deleted.
+    By then Wix was already answering "ConnectYourDomain Error" (domain
+    disconnected on the Wix side). No MX records existed; TXT kept.
+  - Both `www.interactdistrict3220.org` and `interactdistrict3220.org` are
+    Custom Domains on the Worker, and are also in `wrangler.jsonc` (`routes`,
+    `custom_domain: true`) so deploys keep them. `workers_dev` and
+    `preview_urls` are false: the `*.workers.dev` addresses no longer serve
+    the site.
+  - Zone Redirect Rule "Root to www": wildcard `https://interactdistrict3220.org/*`
+    → `https://www.interactdistrict3220.org/${1}`, 301, query string kept.
+    SSL/TLS → Always Use HTTPS on, so `http://` is upgraded first.
+  - Checked on the live domain: every main route 200, every Wix path checked
+    308 to its new page, `/calendar` live, `/_next/image` AVIF, sitemap on
+    www, `http://interactdistrict3220.org/blog` → `https://www.interactdistrict3220.org/news`
+    (3 redirects). The first minute after attaching `www` gave 404s while it
+    propagated.
+  - **Stale DNS after the switch:** SLT's resolver kept the old `www` →
+    Wix record for some hours, which shows Cloudflare **Error 1034 (Edge IP
+    Restricted)**: Wix also sits on Cloudflare, and the old record points at
+    Wix's account. Nothing to fix on our side; it clears when the ISP's
+    cache expires. To check sooner: mobile data, Chrome Secure DNS, or
+    DNS `1.1.1.1`/`8.8.8.8`.
+  - Still to do: submit `https://www.interactdistrict3220.org/sitemap.xml` in
+    Google Search Console; cancel the Wix plan.
 - Forms (Contact, Request a Date, Media Crew) open a
   pre-filled email to the district address. A real back-end later replaces
   only `send()` in `components/forms/mailto-form.tsx`.
