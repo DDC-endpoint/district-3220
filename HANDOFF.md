@@ -26,14 +26,14 @@ These are the only items left. Everything else on the site is complete.
 3. **Remaining files:** the First Quarterly Newsletter
    (`lib/publications.ts`; its row on `/newsletter` reads "File to come").
    Every Admin Document is on the site.
-4. **Calendar:** the district Google Calendar's **secret** iCal address, set
-   as the `DISTRICT_CALENDAR_ICS_URL` secret on the Cloudflare Worker; until
-   then the calendar shows `lib/events.ts`. The calendar stays private
-   (decided 2026-11-10); the officer's steps are under "To switch on at
-   launch".
-5. **Cloudflare setup** (added 2026-11-15, when hosting moved from Vercel to
-   Cloudflare): the adapter is in the repo and checked locally; left are
-   the first deploy and the domain. Steps under "To switch on at launch".
+4. ~~**Calendar**~~ Done 2026-11-15: the secret iCal address is set as the
+   `DISTRICT_CALENDAR_ICS_URL` secret on the Worker. Confirm the live page
+   switched to the feed (see "Free-plan CPU limit" under "To switch on at
+   launch").
+5. **Cloudflare setup** (added 2026-11-15): deployed 2026-11-15 to
+   https://district-3220.website-interactdistrict3220.workers.dev. Left: attach
+   `interactdistrict3220.org` (already on Cloudflare DNS) to the Worker as a
+   custom domain (Workers → `district-3220` → Settings → Domains & Routes).
 
 ### Heading hierarchy reaches `main` — 2026-11-15 (branch `fix/heading-hierarchy-on-main`)
 PR #19 (below) was merged into `content/dm1-spelling-admin-documents` ten
@@ -460,6 +460,26 @@ uses the 5.x JS API. `npm audit` is clean.
   `npx opennextjs-cloudflare deploy`. Each deploy also fills the KV cache
   with the prerendered pages. Cloudflare Images is billed per unique
   transformation above a free allowance (Cloudflare Images pricing page).
+
+  **First deploy, 2026-11-15** (`npm run deploy` from this machine, version
+  `9e476eb5`): https://district-3220.website-interactdistrict3220.workers.dev.
+  The deploy filled KV with 44 entries. Every main route 200, the Wix paths
+  308, `/calendar` served from KV (`x-opennext-cache: HIT`), `/_next/image`
+  returns AVIF through the Images binding. The calendar secret was set
+  afterwards with `wrangler secret put`.
+
+  **Free-plan CPU limit (watch this):** Workers Free allows 10 ms CPU per
+  request; going over returns error 1102. Measured on the live Worker
+  (`wrangler tail`): pages from the KV cache 2–8 ms, `/_next/image` 2 ms,
+  a page rendered on demand (the 404) 91 ms and still served. The calendar's
+  hourly refresh parses the whole Google feed (979 events, 357 KB; about
+  15 ms to parse and 60–140 ms in all, measured in Node on the same parser)
+  and renders the page, so it is well over 10 ms. Cloudflare served the 91 ms
+  request, so it likely works, but if `/calendar` keeps showing "No upcoming
+  events are listed" or the dashboard shows "Exceeded CPU Time Limits",
+  either move to Workers Paid (30 s CPU, also unlocks R2) or trim the feed
+  in `lib/ics.ts` before parsing (drop one-off events that ended before the
+  window; only 222 of the 979 start after 2025-10-01).
 - **Calendar:** set `DISTRICT_CALENDAR_ICS_URL` to the district Google
   Calendar's secret iCal address (see `.env.example`) as an encrypted
   variable (secret) on the Worker. Until then the calendar shows the
