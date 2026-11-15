@@ -2,10 +2,9 @@
  * Home-page content. Kept out of the components so copy can be edited without
  * touching layout, and so the eventual CMS swap is a change to this file only.
  *
- * Photography status (2026-10-14): the hero artwork, the DIMUN, IBTS and
- * Race4Change project photos and the Q1 timeline photos are the district's,
- * supplied by the user. Intercede keeps a marked placeholder (`needsPhoto`)
- * until its photos arrive. Interflash was taken off the home page's projects
+ * Photography status (2026-11-15): the hero artwork, all four project tiles'
+ * photos and the Q1 timeline photos are the district's, supplied by the user
+ * (Intercede's two on 2026-11-15). Interflash was taken off the home page's projects
  * on 2026-10-13 at the user's request. The avenue collages are district
  * photographs supplied on 2026-10-13 (`AVENUE_PANELS`).
  */
@@ -29,6 +28,8 @@ import ibtsHall from '@/public/images/projects/ibts/ibts-hall.jpg';
 import ibtsAudience from '@/public/images/projects/ibts/ibts-audience.jpg';
 import ibtsFinance from '@/public/images/projects/ibts/ibts-finance-session.jpg';
 import ibtsWorkshop from '@/public/images/projects/ibts/ibts-workshop.jpg';
+import intercedeHandover from '@/public/images/projects/intercede/intercede-handover.jpg';
+import intercedeSchoolWalk from '@/public/images/projects/intercede/intercede-school-walk.jpg';
 import q1Dm1Address from '@/public/images/timeline/2026-27/q1-district-meeting-1-address.jpg';
 import q1Dm1Group from '@/public/images/timeline/2026-27/q1-district-meeting-1-group.jpg';
 import q1Dm2Floor from '@/public/images/timeline/2026-27/q1-district-meeting-2-floor.jpg';
@@ -144,9 +145,12 @@ export const FLAGSHIPS: Flagship[] = [
     name: 'Intercede',
     description:
       'Intercede is the largest community service project of Interact District 3220, Sri Lanka and Maldives. Every Rotary year, under the District Council’s Community Service avenue, clubs from across the district work together on one sustainable project for a community in need. The project picks an underserved school or community, finds out what it needs most, and sends Interactors to do the work. Each project is meant to leave something that lasts, and lets Interactors serve beyond their own clubs and cities.',
-    // TODO(district): Intercede's photographs. The zip supplied on 2026-10-14 was empty.
-    photos: [],
-    needsPhoto: true,
+    // Supplied 2026-11-15 at 820×615 and 461×615: smaller than the other
+    // projects' 1600px photos, so they soften on large screens.
+    photos: [
+      { image: intercedeHandover, alt: 'Interactors and teachers with students behind a table of donated sports equipment at a school' },
+      { image: intercedeSchoolWalk, alt: 'Interactors in “From Intent to Impact” shirts walking along a school corridor' },
+    ],
   },
 ];
 
