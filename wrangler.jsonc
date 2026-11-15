@@ -1,0 +1,58 @@
+// Cloudflare Workers config for the site, run through the OpenNext adapter
+// (`@opennextjs/cloudflare`). Setup and the reasons for each binding:
+// HANDOFF.md, "To switch on at launch".
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "district-3220",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-15",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "upload_source_maps": true,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+
+  // The worker calls itself to revalidate ISR pages (the calendar, hourly).
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "district-3220"
+    }
+  ],
+
+  // Incremental cache: prerendered pages and the calendar's fetch cache.
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "district-3220-next-cache"
+    }
+  ],
+
+  // Queue that de-duplicates time-based revalidations.
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NEXT_CACHE_DO_QUEUE",
+        "class_name": "DOQueueHandler"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["DOQueueHandler"]
+    }
+  ],
+
+  // next/image resizing and AVIF/WebP, through Cloudflare Images.
+  "images": {
+    "binding": "IMAGES"
+  }
+
+  // DISTRICT_CALENDAR_ICS_URL is a secret, set on the Worker (dashboard or
+  // `wrangler secret put`), never here.
+}

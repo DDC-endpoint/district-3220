@@ -42,3 +42,9 @@ yarn-error.log*
 # specclaw eval journal: a per-machine log a local hook writes on every
 # subagent run; not project source.
 .specclaw/**/eval-journal.md
+
+# cloudflare (OpenNext build output, local wrangler state, local secrets)
+/.open-next/
+/.wrangler/
+.dev.vars*
+!.dev.vars.example

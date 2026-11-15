@@ -35,7 +35,9 @@ names.
 - Install: `npm ci` (network and `ffmpeg-static` notes: HANDOFF "Dependencies").
 - Dev server: `npm run dev` → http://localhost:4100 (pinned in package.json;
   `npm start` serves a production build on 4100 too).
-- Checks: `npx tsc --noEmit` and `npx next build`.
+- Checks: `npx tsc --noEmit` and `npx next build`. `npm run preview` builds
+  with the Cloudflare adapter and serves it in the Workers runtime on :8787;
+  run it after changes to config, caching, images or the calendar.
 - `/kit` (dev only) renders every shared inner-page component. New pages build
   from `components/page`, `components/people` and `components/forms`, not from
   one-off markup.
