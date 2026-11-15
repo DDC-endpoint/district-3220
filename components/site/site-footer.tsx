@@ -107,8 +107,25 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-hairline pt-6 text-xs text-content-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {SITE.name}</p>
-          <p>{SITE.region}</p>
+          <p>
+            &copy; {SITE.name} &middot; {SITE.region}
+          </p>
+          {/* Site credit (requested by the user 2026-11-15). The name carries
+              the Link Draw hover (DECISIONS §6). No data-morph: the cursor
+              grows into its ring, as over any text link, instead of parking
+              on the name. */}
+          <p>
+            Designed and built by{' '}
+            <a
+              href="https://damiandc.com/"
+              target="_blank"
+              rel="noopener"
+              className="link-draw pb-0.5 font-medium text-content"
+            >
+              DDC Web Services
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
         </div>
       </div>
     </footer>

@@ -212,7 +212,8 @@ phone). Two changes, across every page including home:
   ~2.1:1.
 - **Header:** transparent over a hero photograph at rest, solid chalk with a
   hairline from the first scroll. Active nav item gets a Signal underline.
-- **Footer:** chalk, three columns, micro-label headings, theme line in `accent-text`.
+- **Footer:** chalk, three columns, micro-label headings, theme line in `accent-text`;
+  bottom bar with the site credit (§6, revision 2026-11-15).
 
 ## 6. Motion
 
@@ -310,6 +311,18 @@ design change (see the top of this file).
   the page below the bar instead of pushing the page down, and has a hairline
   on its bottom edge as well as its top so the menu's end reads against the
   chalk page behind it. Same 280ms clip wipe.
+- **Revision 2026-11-15 (approved by the user): footer credit with Link
+  Draw.** The footer's bottom bar reads "© Interact District 3220 · Sri
+  Lanka & Maldives" on the left and "Designed and built by DDC Web Services"
+  on the right (stacked on phones). "DDC Web Services" links to
+  https://damiandc.com/ in a new tab, set in `content` at 500. Its hover is
+  **Link Draw**, the home page's Line Draw at link size: a 1px `accent`
+  underline drawn left to right in 200ms on `ease-out-expo` while the text
+  turns `accent-text`; the cursor grows into its ring as over any text link
+  (no `data-morph`, so it does not park on the name). Keyboard focus shows the same
+  underline; touch shows it always (no hover); reduced motion shows it
+  without the draw. `link-draw` in `app/globals.css`; used for this credit
+  only, not as a general link style.
 
 ### Motion map: where each effect runs
 
