@@ -382,7 +382,9 @@ Every old Wix path 301s to its new URL (`next.config.ts`).
   private (2026-11-10).
 - **Hosting:** Cloudflare Workers through the OpenNext adapter (Node.js
   runtime, ISR for the calendar). **Revision 2026-11-15 (decided by the
-  user):** moved from Vercel. Launch steps: HANDOFF "To switch on at launch".
+  user):** moved from Vercel. ISR cache in Workers KV, not R2 (decided by
+  the user 2026-11-15; R2 needs a payment method). Launch steps: HANDOFF
+  "To switch on at launch".
 - **DIMUN:** a reusable `/events/[slug]` template; DIMUN '25 is its first entry.
 - **Archive gaps:** every year appears. 2023/24, 2021/22 and 1991/92 get pages with
   what is known plus a "records being compiled" note. 1999/2000 hides its
