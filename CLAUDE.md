@@ -38,6 +38,10 @@ names.
 - Checks: `npx tsc --noEmit` and `npx next build`. `npm run preview` builds
   with the Cloudflare adapter and serves it in the Workers runtime on :8787;
   run it after changes to config, caching, images or the calendar.
+- Deploy: `npm run deploy` (needs `npx wrangler login` and, for a live
+  calendar at build, the git-ignored `.env.build`; never put the calendar
+  address in `.env`, `.env.local` or `.env.production*`, which the adapter
+  bundles into the Worker). Details: HANDOFF "To switch on at launch".
 - `/kit` (dev only) renders every shared inner-page component. New pages build
   from `components/page`, `components/people` and `components/forms`, not from
   one-off markup.

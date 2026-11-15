@@ -379,7 +379,9 @@ Every old Wix path 301s to its new URL (`next.config.ts`).
   district's Google Calendar iCal feed from `DISTRICT_CALENDAR_ICS_URL`,
   refreshed hourly on the server. Falls back to `lib/events.ts` until the URL is set.
   The feed is the calendar's *secret* address, so the calendar itself stays
-  private (2026-11-10).
+  private (2026-11-10). Kept as a Worker secret (runtime) and in the
+  git-ignored `.env.build` (build time, so deploys prerender the live
+  calendar), never in a bundled `.env` file (2026-11-15).
 - **Hosting:** Cloudflare Workers through the OpenNext adapter (Node.js
   runtime, ISR for the calendar). **Revision 2026-11-15 (decided by the
   user):** moved from Vercel. ISR cache in Workers KV, not R2 (decided by

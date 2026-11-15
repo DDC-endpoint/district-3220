@@ -26,14 +26,14 @@ These are the only items left. Everything else on the site is complete.
 3. **Remaining files:** the First Quarterly Newsletter
    (`lib/publications.ts`; its row on `/newsletter` reads "File to come").
    Every Admin Document is on the site.
-4. ~~**Calendar**~~ Done 2026-11-15: the secret iCal address is set as the
-   `DISTRICT_CALENDAR_ICS_URL` secret on the Worker. Confirm the live page
-   switched to the feed (see "Free-plan CPU limit" under "To switch on at
-   launch").
+4. ~~**Calendar**~~ Done 2026-11-15: the live calendar shows the Google
+   feed. The secret iCal address is a Worker secret (runtime) and is in the
+   git-ignored `.env.build` (build time); see "Calendar" under "To switch on
+   at launch".
 5. **Cloudflare setup** (added 2026-11-15): deployed 2026-11-15 to
-   https://district-3220.website-interactdistrict3220.workers.dev. Left: attach
-   `interactdistrict3220.org` (already on Cloudflare DNS) to the Worker as a
-   custom domain (Workers → `district-3220` → Settings → Domains & Routes).
+   https://district-3220.website-interactdistrict3220.workers.dev. Left: the
+   custom domain (the user is doing this; steps under "Custom domain" in "To
+   switch on at launch").
 
 ### Heading hierarchy reaches `main` — 2026-11-15 (branch `fix/heading-hierarchy-on-main`)
 PR #19 (below) was merged into `content/dm1-spelling-admin-documents` ten
@@ -455,11 +455,16 @@ uses the 5.x JS API. `npm audit` is clean.
     later, change only `wrangler.jsonc` and `open-next.config.ts`.
 
   **Deploying:** `npm run deploy` from a logged-in machine (`npx wrangler
-  login`), or connect the GitHub repo under Workers → Workers Builds with
-  build command `npx opennextjs-cloudflare build` and deploy command
-  `npx opennextjs-cloudflare deploy`. Each deploy also fills the KV cache
-  with the prerendered pages. Cloudflare Images is billed per unique
-  transformation above a free allowance (Cloudflare Images pricing page).
+  login`) that has `.env.build` (see "Calendar" below). It runs
+  `npm run cf-build` (the OpenNext build, with `.env.build` loaded into its
+  environment by Node's `--env-file-if-exists`), then
+  `opennextjs-cloudflare deploy`, which uploads the Worker and fills the KV
+  cache with the prerendered pages. Alternatively connect the GitHub repo
+  under Workers → Workers Builds: build command `npm run cf-build`, deploy
+  command `npx opennextjs-cloudflare deploy`, and the calendar address under
+  the build's "Build variables and secrets". Cloudflare Images is billed per
+  unique transformation above a free allowance (Cloudflare Images pricing
+  page).
 
   **First deploy, 2026-11-15** (`npm run deploy` from this machine, version
   `9e476eb5`): https://district-3220.website-interactdistrict3220.workers.dev.
@@ -468,32 +473,56 @@ uses the 5.x JS API. `npm audit` is clean.
   returns AVIF through the Images binding. The calendar secret was set
   afterwards with `wrangler secret put`.
 
-  **Free-plan CPU limit (watch this):** Workers Free allows 10 ms CPU per
-  request; going over returns error 1102. Measured on the live Worker
-  (`wrangler tail`): pages from the KV cache 2–8 ms, `/_next/image` 2 ms,
-  a page rendered on demand (the 404) 91 ms and still served. The calendar's
-  hourly refresh parses the whole Google feed (979 events, 357 KB; about
-  15 ms to parse and 60–140 ms in all, measured in Node on the same parser)
-  and renders the page, so it is well over 10 ms. Cloudflare served the 91 ms
-  request, so it likely works, but if `/calendar` keeps showing "No upcoming
-  events are listed" or the dashboard shows "Exceeded CPU Time Limits",
-  either move to Workers Paid (30 s CPU, also unlocks R2) or trim the feed
-  in `lib/ics.ts` before parsing (drop one-off events that ended before the
-  window; only 222 of the 979 start after 2025-10-01).
-- **Calendar:** set `DISTRICT_CALENDAR_ICS_URL` to the district Google
-  Calendar's secret iCal address (see `.env.example`) as an encrypted
-  variable (secret) on the Worker. Until then the calendar shows the
-  recorded events. The Worker must exist first (after the first deploy):
-  dashboard → Workers → `district-3220` → Settings → Variables and Secrets →
-  Add → type Secret, or `npx wrangler secret put DISTRICT_CALENDAR_ICS_URL`.
-  `/calendar` is prerendered at build time, so without the address at build
-  it shows the recorded events until its first hourly refresh. With Workers
-  Builds, also add it under the build's "Build variables and secrets" so
-  each build renders the live calendar straight away.
+  **Second deploy, 2026-11-15** (version `7da98778`), built with
+  `.env.build`: KV filled with 45 entries (the pages plus the calendar's
+  fetch cache), `/calendar` served from KV with the live feed straight after
+  the deploy, the Worker secret kept. Each build has a new build ID, so the
+  previous build's KV entries stay behind unused; they are small and can be
+  left (or deleted by their `incremental-cache/<old buildId>/` prefix).
+
+  **Free-plan CPU limit:** Workers Free allows 10 ms CPU per request; going
+  over returns error 1102. Measured on the live Worker (`wrangler tail`):
+  pages from the KV cache 2–8 ms, `/_next/image` 2 ms, a page rendered on
+  demand (the 404) 91 ms. The calendar refresh parses the whole Google feed
+  (979 events, 357 KB) and renders the page: forced once on 2026-11-15 by
+  deleting its KV entry, it took **402 ms CPU and completed** (outcome `ok`),
+  and the page switched to the feed. So Cloudflare is not cutting these off
+  today. If `/calendar` ever errors (1102) or stops updating, or the
+  dashboard shows "Exceeded CPU Time Limits", either move to Workers Paid
+  (30 s CPU, also unlocks R2) or trim the feed in `lib/ics.ts` before
+  parsing (drop one-off events that ended before the window; only 222 of the
+  979 start after 2025-10-01).
+
+  **Calendar refresh by hand:** the page's KV key is
+  `incremental-cache/<buildId>/<sha256 of "/route-cache/APP_PAGE/<hash>/$/calendar">.cache`
+  (the path under `.open-next/cache/<buildId>/` minus `.cache`). Deleting it
+  (`npx wrangler kv key delete <key> --namespace-id ca8dc820400b43c18ea3b9f34ce26031 --remote`)
+  makes the next visit rebuild the page from the feed. KV can serve the old
+  copy for up to ~60 s afterwards. Back the entry up first
+  (`wrangler kv key get … --text`) so it can be restored with `kv key put`.
+- **Calendar (done 2026-11-15):** the district Google Calendar's secret
+  iCal address (`DISTRICT_CALENDAR_ICS_URL`) is kept in two places, both
+  outside git:
+  1. **Runtime:** a secret on the Worker (dashboard → Workers →
+     `district-3220` → Settings → Variables and Secrets, or
+     `npx wrangler secret put DISTRICT_CALENDAR_ICS_URL`). The hourly refresh
+     reads it. Secrets survive deploys.
+  2. **Build time:** the git-ignored `.env.build` in the project root (format
+     in `.env.example`). `npm run cf-build` loads it into the build's
+     environment only, so every deploy prerenders the live calendar instead
+     of the recorded events. Checked on the 2026-11-15 build: the address is
+     not in the Worker code or the public assets. It is in the build's fetch
+     cache entry, which goes to KV (private to the account; the runtime
+     refresh writes the same entry). Do **not** use `.env`, `.env.local` or
+     `.env.production*`: the OpenNext adapter compiles those into the
+     Worker's code (`.open-next/cloudflare/next-env.mjs`).
+  A machine without `.env.build` still deploys; the calendar then shows the
+  recorded events until its first hourly refresh after a visit. If the
+  address is reset in Google Calendar, update both copies.
 - **Calendar address (decided 2026-11-10):** use the *secret* address, not a
   public calendar. The site reads the feed on the server and has no
   subscribe link, so the calendar never needs to be public; the address is
-  kept only as a secret in the Worker's settings. Steps for the calendar's
+  kept only as a Worker secret and in the git-ignored `.env.build`. Steps for the calendar's
   owner, on a computer (or a phone browser in "Desktop site" mode, not the
   Calendar app): calendar.google.com → gear → Settings → under "Settings for
   my calendars" the district calendar → Integrate calendar → copy "Secret
@@ -502,6 +531,30 @@ uses the 5.x JS API. `npm audit` is clean.
   update the variable. If the account has no secret address (a Workspace
   admin can disable it), fall back to a public calendar and its public
   address.
+- **Custom domain (the user is doing this, 2026-11-15).** The zone
+  `interactdistrict3220.org` is already on Cloudflare DNS. The site's
+  canonical address is `https://www.interactdistrict3220.org` (`SITE.url` in
+  `lib/site.ts`; metadata, sitemap and robots use it), so `www` serves the
+  site and the bare domain redirects to it.
+  1. DNS → Records: delete the old Wix records for `@` and `www` only (A,
+     AAAA or CNAME pointing at Wix). Keep MX and TXT records.
+  2. Workers & Pages → `district-3220` → Settings → Domains & Routes → Add →
+     Custom domain: `www.interactdistrict3220.org`, then again for
+     `interactdistrict3220.org`. Cloudflare creates the DNS records and the
+     certificates (a few minutes).
+  3. Rules → Redirect Rules → create a rule (or the "Redirect from root to
+     WWW" template): hostname equals `interactdistrict3220.org` → dynamic
+     redirect to `concat("https://www.interactdistrict3220.org",
+     http.request.uri.path)`, 301, preserve query string.
+  4. SSL/TLS → Edge Certificates → Always Use HTTPS: on.
+  5. Check https://www.interactdistrict3220.org, that the bare domain
+     redirects, and an old Wix link (`/blog` → `/news`).
+  Then: add both domains to `wrangler.jsonc` (`routes` with
+  `custom_domain: true`) so the config matches the dashboard, set
+  `workers_dev: false` and `preview_urls: false` so the workers.dev address
+  stops serving a duplicate copy, redeploy, and submit
+  `https://www.interactdistrict3220.org/sitemap.xml` in Google Search
+  Console. Keep the Wix plan until the new domain is confirmed, then cancel it.
 - Forms (Contact, Request a Date, Media Crew) open a
   pre-filled email to the district address. A real back-end later replaces
   only `send()` in `components/forms/mailto-form.tsx`.
