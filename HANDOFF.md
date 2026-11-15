@@ -32,8 +32,9 @@ These are the only items left. Everything else on the site is complete.
    (decided 2026-11-10); the officer's steps are under "To switch on at
    launch".
 5. **Cloudflare setup** (added 2026-11-15, when hosting moved from Vercel to
-   Cloudflare): the OpenNext adapter, cache, images and domain. Steps under
-   "To switch on at launch".
+   Cloudflare): the adapter is in the repo and checked locally; left are
+   turning on R2, the first deploy and the domain. Steps under "To switch on
+   at launch".
 
 ### Heading hierarchy reaches `main` — 2026-11-15 (branch `fix/heading-hierarchy-on-main`)
 PR #19 (below) was merged into `content/dm1-spelling-admin-documents` ten
@@ -411,26 +412,60 @@ uses the 5.x JS API. `npm audit` is clean.
   Cloudflare Workers through the OpenNext adapter, `@opennextjs/cloudflare`
   (Cloudflare's own Next.js integration; Next lists it under "Other
   platforms" in `node_modules/next/dist/docs/01-app/01-getting-started/17-deploying.md`).
-  **The adapter is not set up in this repo yet.** At launch, following
-  Cloudflare's current Next.js guide:
-  1. Add `@opennextjs/cloudflare` and `wrangler`, their config files
-     (`wrangler.jsonc`, `open-next.config.ts`) and the build/preview/deploy
-     scripts. Check the adapter's supported Next version against
-     `package.json` (16.4.6) first.
-  2. Give it an incremental cache (R2) so the calendar's hourly refresh
-     (`revalidate = 3600`) survives between requests.
-  3. Decide image optimisation: the adapter can resize through Cloudflare
-     Images, which is billed per transformation above a free allowance.
-     Pre-sizing the portraits (engineering to-do 1) cuts how much it does.
-  4. Run the preview build locally (in WSL if it fails on Windows) and check
-     every route, the Wix redirects and `/_next/image` before the first deploy.
-  5. Connect the GitHub repo in the Cloudflare dashboard, then move
-     `interactdistrict3220.org` from Wix to Cloudflare DNS and attach it to
-     the Worker as a custom domain.
+  **Set up 2026-11-15 (branch `deploy/cloudflare`):**
+  - `@opennextjs/cloudflare` 1.20.17 (supports Next ≥16.4.5) and `wrangler`
+    4.162; `npm approve-scripts` allows the esbuild and workerd install
+    scripts (the build and local preview need both). `allowScripts` in
+    `package.json` pins exact versions, so after upgrading wrangler run
+    `npm approve-scripts esbuild workerd` again.
+  - `wrangler.jsonc`: Worker `district-3220`; R2 incremental cache (bucket
+    `district-3220-next-cache`, APAC); Durable Object queue for the
+    calendar's hourly revalidation; self service binding; Cloudflare Images
+    binding for `next/image` (AVIF/WebP). `open-next.config.ts` is OpenNext's
+    "small site using revalidation" setup without a tag cache (nothing calls
+    `revalidateTag`/`revalidatePath`). `public/_headers` marks
+    `/_next/static/*` immutable.
+  - Scripts: `npm run preview` (build, then serve in the Workers runtime on
+    :8787), `npm run deploy`, `npm run upload` (new version, not promoted),
+    `npm run cf-typegen`.
+  - Why OpenNext and not vinext: Cloudflare's guide now recommends vinext for
+    new apps, but vinext is beta and replaces the Next build with Vite; OpenNext
+    runs the real `next build`, so the locked design ships exactly as built.
+  - Checked with `npm run preview` on Windows (OpenNext warns that Windows is
+    not fully supported; it built and ran without errors; use WSL if a later
+    build fails): every route 200, `/council` 307 to the current year (its
+    `redirect()`), `/kit` 404 in production as intended, every Wix path 308,
+    `/_next/image` returns AVIF (a 140 KB portrait at w=96: 2 KB). Chrome at
+    1440×900 and 390×844: fonts and images load, no console errors, no
+    sideways overflow. Worker 1.33 MiB gzipped (free plan limit 3 MiB);
+    assets 335 files, 320 MB, none over the 25 MiB per-file limit.
+  - `npm audit`: 3 moderate advisories in `glob`/`minimatch` through the
+    adapter's build CLI (file matching at build time, not in the Worker).
+    npm's only fix is downgrading the adapter to 0.3.0, so they are accepted
+    until the adapter updates.
+
+  **Still to do, in order:**
+  1. Turn on R2 for the account in the Cloudflare dashboard (R2 Object
+     Storage; it needs a payment method even on the free tier), then
+     `npx wrangler r2 bucket create district-3220-next-cache --location apac`.
+  2. First deploy: `npm run deploy` from a logged-in machine, or connect the
+     GitHub repo under Workers → Workers Builds with build command
+     `npx opennextjs-cloudflare build` and deploy command
+     `npx opennextjs-cloudflare deploy`. The deploy also fills the R2 cache
+     with the prerendered pages. Cloudflare Images is billed per unique
+     transformation above a free allowance (Cloudflare Images pricing page).
+  3. Set the calendar secret (below), then move `interactdistrict3220.org`
+     from Wix to Cloudflare DNS and attach it to the Worker as a custom domain.
 - **Calendar:** set `DISTRICT_CALENDAR_ICS_URL` to the district Google
   Calendar's secret iCal address (see `.env.example`) as an encrypted
   variable (secret) on the Worker. Until then the calendar shows the
-  recorded events.
+  recorded events. The Worker must exist first (after the first deploy):
+  dashboard → Workers → `district-3220` → Settings → Variables and Secrets →
+  Add → type Secret, or `npx wrangler secret put DISTRICT_CALENDAR_ICS_URL`.
+  `/calendar` is prerendered at build time, so without the address at build
+  it shows the recorded events until its first hourly refresh. With Workers
+  Builds, also add it under the build's "Build variables and secrets" so
+  each build renders the live calendar straight away.
 - **Calendar address (decided 2026-11-10):** use the *secret* address, not a
   public calendar. The site reads the feed on the server and has no
   subscribe link, so the calendar never needs to be public; the address is
@@ -523,8 +558,10 @@ tiles, and the Newsletter file (items 4 and 8 below).
 
 ### Still to do (engineering)
 1. Image pipeline: the council portraits are 2–6MB originals (~290MB total).
-   `next/image` resizes them on request, but pre-sizing them would cut build
-   and cold-cache cost, and Cloudflare Images transformations.
+   `next/image` resizes them on request through Cloudflare Images, but
+   pre-sizing them would cut the upload (320 MB of assets) and each first
+   resize. It would not cut the Images bill, which counts unique
+   transformations, not bytes.
 2. Re-run the throttled-mobile trace on the Cloudflare deploy (done locally on
    `next start`, 2026-11-12, above; Cloudflare's CDN and HTTP/2 should only
    improve it).
