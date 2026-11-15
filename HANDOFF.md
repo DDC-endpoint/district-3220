@@ -33,8 +33,7 @@ These are the only items left. Everything else on the site is complete.
    launch".
 5. **Cloudflare setup** (added 2026-11-15, when hosting moved from Vercel to
    Cloudflare): the adapter is in the repo and checked locally; left are
-   turning on R2, the first deploy and the domain. Steps under "To switch on
-   at launch".
+   the first deploy and the domain. Steps under "To switch on at launch".
 
 ### Heading hierarchy reaches `main` — 2026-11-15 (branch `fix/heading-hierarchy-on-main`)
 PR #19 (below) was merged into `content/dm1-spelling-admin-documents` ten
@@ -418,8 +417,9 @@ uses the 5.x JS API. `npm audit` is clean.
     scripts (the build and local preview need both). `allowScripts` in
     `package.json` pins exact versions, so after upgrading wrangler run
     `npm approve-scripts esbuild workerd` again.
-  - `wrangler.jsonc`: Worker `district-3220`; R2 incremental cache (bucket
-    `district-3220-next-cache`, APAC); Durable Object queue for the
+  - `wrangler.jsonc`: Worker `district-3220`; Workers KV incremental cache
+    (namespace `district-3220-next-cache`; see the KV note below); Durable
+    Object queue for the
     calendar's hourly revalidation; self service binding; Cloudflare Images
     binding for `next/image` (AVIF/WebP). `open-next.config.ts` is OpenNext's
     "small site using revalidation" setup without a tag cache (nothing calls
@@ -443,19 +443,23 @@ uses the 5.x JS API. `npm audit` is clean.
     adapter's build CLI (file matching at build time, not in the Worker).
     npm's only fix is downgrading the adapter to 0.3.0, so they are accepted
     until the adapter updates.
+  - **KV instead of R2 (decided by the user 2026-11-15):** the R2 cache
+    could not be created ("Please enable R2 through the Cloudflare
+    Dashboard", code 10042; R2 needs a payment method even on the free
+    tier). The cache is in Workers KV instead, on the free plan. OpenNext
+    advises against KV because a write can take up to ~60 s to reach every
+    location; the only page that refreshes is the calendar, hourly, so that
+    does not matter here. Each page view is about one KV read and each
+    deploy about one write per prerendered page; check the free-plan KV
+    limits on Cloudflare's pricing page if traffic grows. To move to R2
+    later, change only `wrangler.jsonc` and `open-next.config.ts`.
 
-  **Still to do, in order:**
-  1. Turn on R2 for the account in the Cloudflare dashboard (R2 Object
-     Storage; it needs a payment method even on the free tier), then
-     `npx wrangler r2 bucket create district-3220-next-cache --location apac`.
-  2. First deploy: `npm run deploy` from a logged-in machine, or connect the
-     GitHub repo under Workers → Workers Builds with build command
-     `npx opennextjs-cloudflare build` and deploy command
-     `npx opennextjs-cloudflare deploy`. The deploy also fills the R2 cache
-     with the prerendered pages. Cloudflare Images is billed per unique
-     transformation above a free allowance (Cloudflare Images pricing page).
-  3. Set the calendar secret (below), then move `interactdistrict3220.org`
-     from Wix to Cloudflare DNS and attach it to the Worker as a custom domain.
+  **Deploying:** `npm run deploy` from a logged-in machine (`npx wrangler
+  login`), or connect the GitHub repo under Workers → Workers Builds with
+  build command `npx opennextjs-cloudflare build` and deploy command
+  `npx opennextjs-cloudflare deploy`. Each deploy also fills the KV cache
+  with the prerendered pages. Cloudflare Images is billed per unique
+  transformation above a free allowance (Cloudflare Images pricing page).
 - **Calendar:** set `DISTRICT_CALENDAR_ICS_URL` to the district Google
   Calendar's secret iCal address (see `.env.example`) as an encrypted
   variable (secret) on the Worker. Until then the calendar shows the

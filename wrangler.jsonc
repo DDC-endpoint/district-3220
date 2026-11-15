@@ -25,10 +25,15 @@
   ],
 
   // Incremental cache: prerendered pages and the calendar's fetch cache.
-  "r2_buckets": [
+  // Workers KV (namespace `district-3220-next-cache`), chosen 2026-11-15
+  // over R2 because R2 needs a payment method on the account. KV takes up
+  // to ~60 s to spread a write worldwide, which is fine for a calendar that
+  // refreshes hourly. To move to R2 later: an `r2_buckets` binding named
+  // NEXT_INC_CACHE_R2_BUCKET and the R2 cache in open-next.config.ts.
+  "kv_namespaces": [
     {
-      "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "district-3220-next-cache"
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "ca8dc820400b43c18ea3b9f34ce26031"
     }
   ],
 
