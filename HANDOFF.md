@@ -17,11 +17,10 @@ site-build decisions).
 
 ### Remaining before launch (as of 2026-10-19, set by the user)
 These are the only items left. Everything else on the site is complete.
-1. **Intercede's photographs** for its project tile and dialog. The zip
-   supplied on 2026-10-14 was empty; the user is re-sending it. Until then
-   the tile is plain navy (`needsPhoto`, `data-placeholder`). Add them to
-   `public/images/projects/intercede/` and the `photos` array in
-   `FLAGSHIPS` (`lib/home.ts`), cover first, and drop `needsPhoto`.
+1. ~~**Intercede's photographs**~~ Done 2026-11-15: two photos in
+   `public/images/projects/intercede/` (cover: the sports-equipment
+   handover). The user's files were only 820×615 and 461×615, so they look
+   soft on large screens. Swap in larger originals if the district has them.
 2. **Each new quarter's photographs** for the home timeline, as the quarter
    closes (`TIMELINE` in `lib/home.ts`; one entry per quarter).
 3. **Remaining files:** the First Quarterly Newsletter
