@@ -380,7 +380,9 @@ Every old Wix path 301s to its new URL (`next.config.ts`).
   refreshed hourly on the server. Falls back to `lib/events.ts` until the URL is set.
   The feed is the calendar's *secret* address, so the calendar itself stays
   private (2026-11-10).
-- **Hosting:** Vercel (Node runtime, ISR).
+- **Hosting:** Cloudflare Workers through the OpenNext adapter (Node.js
+  runtime, ISR for the calendar). **Revision 2026-11-15 (decided by the
+  user):** moved from Vercel. Launch steps: HANDOFF "To switch on at launch".
 - **DIMUN:** a reusable `/events/[slug]` template; DIMUN '25 is its first entry.
 - **Archive gaps:** every year appears. 2023/24, 2021/22 and 1991/92 get pages with
   what is known plus a "records being compiled" note. 1999/2000 hides its
@@ -436,8 +438,8 @@ Every old Wix path 301s to its new URL (`next.config.ts`).
 ## 9. Still in force from before the redesign
 
 **Stack:** Next.js 16 (App Router, TypeScript), Tailwind CSS v4 (CSS-first
-`@theme`), Framer Motion 14 + Lenis (12 until 2026-10-06). Hosting: Vercel
-(decided 2026-10-05, §8).
+`@theme`), Framer Motion 14 + Lenis (12 until 2026-10-06). Hosting: Cloudflare
+(decided 2026-11-15; Vercel from 2026-10-05, §8).
 
 **Navigation:** top-level labels and order identical to the Wix site. Clean URLs
 with 301s from every old path (`next.config.ts`). Since 2026-10-06 there are no
