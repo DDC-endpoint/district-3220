@@ -24,7 +24,8 @@ These are the only items left. Everything else on the site is complete.
 2. **Each new quarter's photographs** for the home timeline, as the quarter
    closes (`TIMELINE` in `lib/home.ts`; one entry per quarter).
 3. **Remaining files:** the First Quarterly Newsletter
-   (`lib/publications.ts`). Every Admin Document is on the site.
+   (`lib/publications.ts`; its row on `/newsletter` reads "File to come").
+   Every Admin Document is on the site.
 4. **Calendar:** the district Google Calendar's **secret** iCal address, set
    as the `DISTRICT_CALENDAR_ICS_URL` secret on the Cloudflare Worker; until
    then the calendar shows `lib/events.ts`. The calendar stays private
@@ -41,6 +42,15 @@ reached `main`. Its commit is cherry-picked unchanged; nothing added to `main`
 since uses the old Fraunces item titles. Same PR: hosting moves to Cloudflare
 in every doc (CLAUDE.md, DECISIONS §8, this file, `.env.example`, the
 calendar code comments).
+
+Also in this PR, at the user's request: on `/newsletter` the third edition is
+renamed "3rd Quarterly Report 2025/26" (the user wrote "25/26"; the site's
+year format is used). The placeholder note under the editions, the last
+`<Placeholder>` on a public page, is removed. The First Quarterly Edition
+keeps its "File to come" row. `<Placeholder>` now renders only on `/kit`.
+Other `data-placeholder` markers stay; they are designed states, not notes:
+the 2001/02–2019/20 span on Archives and the initials portrait for the
+2016/17 DIR in the College of DIRs.
 
 ### Heading hierarchy — 2026-11-11 (branch `design/heading-hierarchy`)
 Requested by the user: sub-headings read too close to section headings.

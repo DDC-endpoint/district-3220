@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { PageHeader } from '@/components/page/page-header';
 import { SectionHeader } from '@/components/page/section-header';
-import { Placeholder } from '@/components/page/placeholder';
 import { Reveal } from '@/components/motion/reveal';
 import { DocumentList } from '@/components/page/document-list';
 import { NEWSLETTER, NEWSLETTER_EDITIONS } from '@/lib/publications';
@@ -43,10 +42,6 @@ export default function NewsletterPage() {
         <SectionHeader id="editions-heading" title="Editions." lede="Newest first." />
         {/* Straight under the section rule, which is the list's first hairline. */}
         <DocumentList items={NEWSLETTER_EDITIONS} />
-        <Placeholder className="mt-8 max-w-3xl">
-          Only the third edition’s link survived from the old site. The other editions will be added as
-          the council supplies the files.
-        </Placeholder>
       </section>
     </main>
   );
