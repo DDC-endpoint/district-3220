@@ -24,11 +24,51 @@ These are the only items left. Everything else on the site is complete.
 2. **Each new quarter's photographs** for the home timeline, as the quarter
    closes (`TIMELINE` in `lib/home.ts`; one entry per quarter).
 3. **Remaining files:** the First Quarterly Newsletter
-   (`lib/publications.ts`). Every Admin Document is on the site.
+   (`lib/publications.ts`; its row on `/newsletter` reads "File to come").
+   Every Admin Document is on the site.
 4. **Calendar:** the district Google Calendar's **secret** iCal address, set
-   as `DISTRICT_CALENDAR_ICS_URL` on Vercel; until then the calendar shows
-   `lib/events.ts`. The calendar stays private (decided 2026-11-10); the
-   officer's steps are under "To switch on at launch".
+   as the `DISTRICT_CALENDAR_ICS_URL` secret on the Cloudflare Worker; until
+   then the calendar shows `lib/events.ts`. The calendar stays private
+   (decided 2026-11-10); the officer's steps are under "To switch on at
+   launch".
+5. **Cloudflare setup** (added 2026-11-15, when hosting moved from Vercel to
+   Cloudflare): the OpenNext adapter, cache, images and domain. Steps under
+   "To switch on at launch".
+
+### Heading hierarchy reaches `main` — 2026-11-15 (branch `fix/heading-hierarchy-on-main`)
+PR #19 (below) was merged into `content/dm1-spelling-admin-documents` ten
+seconds after that branch had merged to `main` as PR #18, so the change never
+reached `main`. Its commit is cherry-picked unchanged; nothing added to `main`
+since uses the old Fraunces item titles. Same PR: hosting moves to Cloudflare
+in every doc (CLAUDE.md, DECISIONS §8, this file, `.env.example`, the
+calendar code comments).
+
+Also in this PR, at the user's request: on `/newsletter` the third edition is
+renamed "3rd Quarterly Report 2025/26" (the user wrote "25/26"; the site's
+year format is used). The placeholder note under the editions, the last
+`<Placeholder>` on a public page, is removed. The First Quarterly Edition
+keeps its "File to come" row. `<Placeholder>` now renders only on `/kit`.
+Other `data-placeholder` markers stay; they are designed states, not notes:
+the 2001/02–2019/20 span on Archives and the initials portrait for the
+2016/17 DIR in the College of DIRs.
+
+### Heading hierarchy — 2026-11-11 (branch `design/heading-hierarchy`)
+Requested by the user: sub-headings read too close to section headings.
+Decisions were asked up front. Checked in Chrome at 1440×900 and 390×844.
+- **Item titles in the body face:** new `item-title` utility (Instrument
+  Sans 600) and `text-item` size (1.125rem) in `app/globals.css`, applied to
+  the names of documents, people, events, projects, committees, avenues,
+  services and link cards on every page, home included. Fraunces is kept for
+  page, section and sub-section headings, dialog titles, news headlines,
+  years and numerals, and italic themes.
+- **`text-title` phone floor** 1.6rem to 1.9rem; desktop unchanged.
+- **Recorded** as a dated revision in DECISIONS §3; reference shots `02`,
+  `03`, `05` retaken.
+- **Judgement calls:** years ("1964", "2025/26") and big numerals stay in
+  Fraunces, as numerals are part of its display role ("Q1" on the timeline).
+  The contact page's email link is unchanged: it is a link, not a title.
+  Officer and council names use `text-base`, project tiles 1.25rem, and the
+  two accordions keep their own sizes.
 
 ### 1st District Meeting spelling and Admin Documents — 2026-10-19 (branch `content/dm1-spelling-admin-documents`)
 Requested by the user. Decisions were asked up front. Checked in Chrome at 1440×900 and 390×844.
@@ -331,7 +371,7 @@ every effect runs as before.
   and the drawer open without dropped frames once the page has settled;
   `ical.js` stays server-only. Not done, on purpose: `experimental.inlineCss`
   (duplicates the 72 KB stylesheet into every HTML response for about one
-  round trip on Vercel's HTTP/2).
+  round trip on the host's HTTP/2).
 
 ### Dependencies — 2026-11-10 (branch `fix/next-security-update`)
 `npm audit` flagged a critical advisory in Next 16.0.0–16.4.0 (unauthenticated
@@ -365,13 +405,36 @@ uses the 5.x JS API. `npm audit` is clean.
   `npm install-scripts approve ffmpeg-static` and `npm ci`.
 
 ### To switch on at launch
-- **Hosting is Vercel.** Set `DISTRICT_CALENDAR_ICS_URL` to the district
-  Google Calendar's secret iCal address (see `.env.example`). Until then the
-  calendar shows the recorded events.
+- **Hosting is Cloudflare** (decided 2026-11-15; Vercel before that). The
+  site needs a server (the calendar refreshes hourly, `next/image` resizes
+  on request, the Wix redirects run in `next.config.ts`), so it runs on
+  Cloudflare Workers through the OpenNext adapter, `@opennextjs/cloudflare`
+  (Cloudflare's own Next.js integration; Next lists it under "Other
+  platforms" in `node_modules/next/dist/docs/01-app/01-getting-started/17-deploying.md`).
+  **The adapter is not set up in this repo yet.** At launch, following
+  Cloudflare's current Next.js guide:
+  1. Add `@opennextjs/cloudflare` and `wrangler`, their config files
+     (`wrangler.jsonc`, `open-next.config.ts`) and the build/preview/deploy
+     scripts. Check the adapter's supported Next version against
+     `package.json` (16.4.6) first.
+  2. Give it an incremental cache (R2) so the calendar's hourly refresh
+     (`revalidate = 3600`) survives between requests.
+  3. Decide image optimisation: the adapter can resize through Cloudflare
+     Images, which is billed per transformation above a free allowance.
+     Pre-sizing the portraits (engineering to-do 1) cuts how much it does.
+  4. Run the preview build locally (in WSL if it fails on Windows) and check
+     every route, the Wix redirects and `/_next/image` before the first deploy.
+  5. Connect the GitHub repo in the Cloudflare dashboard, then move
+     `interactdistrict3220.org` from Wix to Cloudflare DNS and attach it to
+     the Worker as a custom domain.
+- **Calendar:** set `DISTRICT_CALENDAR_ICS_URL` to the district Google
+  Calendar's secret iCal address (see `.env.example`) as an encrypted
+  variable (secret) on the Worker. Until then the calendar shows the
+  recorded events.
 - **Calendar address (decided 2026-11-10):** use the *secret* address, not a
   public calendar. The site reads the feed on the server and has no
   subscribe link, so the calendar never needs to be public; the address is
-  kept only in Vercel's environment variables. Steps for the calendar's
+  kept only as a secret in the Worker's settings. Steps for the calendar's
   owner, on a computer (or a phone browser in "Desktop site" mode, not the
   Calendar app): calendar.google.com → gear → Settings → under "Settings for
   my calendars" the district calendar → Integrate calendar → copy "Secret
@@ -460,11 +523,11 @@ tiles, and the Newsletter file (items 4 and 8 below).
 
 ### Still to do (engineering)
 1. Image pipeline: the council portraits are 2–6MB originals (~290MB total).
-   `next/image` resizes them on Vercel, but pre-sizing them would cut build and
-   cold-cache cost.
-2. Re-run the throttled-mobile trace on the Vercel deploy (done locally on
-   `next start`, 2026-11-12, above; Vercel adds HTTP/2 and its image CDN,
-   which should only improve it).
+   `next/image` resizes them on request, but pre-sizing them would cut build
+   and cold-cache cost, and Cloudflare Images transformations.
+2. Re-run the throttled-mobile trace on the Cloudflare deploy (done locally on
+   `next start`, 2026-11-12, above; Cloudflare's CDN and HTTP/2 should only
+   improve it).
 3. Optional: reflect the calendar's view and month in the URL so it can be
    linked to.
 
@@ -615,7 +678,7 @@ under Current Status).
 | Styling | Tailwind CSS v4 (CSS-first `@theme`) |
 | Motion | Framer Motion 14 + Lenis |
 | Media | sharp; ffmpeg-static, ffprobe-static (dev only, video re-encodes) |
-| Hosting | **Not decided** at the time — Vercel since 2026-10-05 (DECISIONS.md §8) |
+| Hosting | **Not decided** at the time — Vercel from 2026-10-05, Cloudflare since 2026-11-15 (DECISIONS.md §8) |
 
 Versions deliberately match `EnderGuardian25/personal-portfolio` (the effects lab at
 lab.damiandc.com) so its effects lift across directly.

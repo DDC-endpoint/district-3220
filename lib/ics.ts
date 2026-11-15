@@ -85,7 +85,7 @@ function toEvent(id: string, ev: ICAL.Event, start: ICAL.Time, end: ICAL.Time | 
   const iso = (t: ICAL.Time) => {
     if (t.isDate) return t.toString();
     // A floating time (no Z, or a TZID the feed never defined) would be read
-    // in the server's own zone, UTC on Vercel, and land 5h30 late. Every
+    // in the server's own zone, UTC on Cloudflare Workers, and land 5h30 late. Every
     // event is in the district, so floating means Sri Lanka time.
     if (t.zone?.tzid === 'floating') {
       return new Date(Date.UTC(t.year, t.month - 1, t.day, t.hour, t.minute, t.second) - COLOMBO_OFFSET_MS).toISOString();

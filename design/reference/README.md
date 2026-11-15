@@ -26,6 +26,11 @@ band is the quarterly timeline.
 pass (DECISIONS §8). `05` and `06` had still shown the pre-2026-10-06 header
 and closing copy. `01`–`03` are unchanged.
 
+`02`, `03` and `05` retaken 2026-11-11 from a production build after an
+approved revision (DECISIONS §3, heading hierarchy): project, avenue and
+officer-tile titles are set in Instrument Sans 600, so Fraunces reads only as
+a heading.
+
 These are
 the visual ground truth for `design/DECISIONS.md`: new pages should look like
 they belong next to these.

@@ -2,11 +2,11 @@
  * Newsletter editions and administrative documents. Sources: CONTENT.md §8
  * and §10.
  *
- * Of the newsletters, only the 3rd quarterly edition's link survived the
- * crawl; the old site rendered the rest through a Wix widget whose URLs never
- * appeared in the page HTML, so they stay placeholders until the council
- * supplies the files (CONTENT.md §19, gap 9). The admin documents came from
- * the council's Drive folders (see DOCUMENT_SECTIONS).
+ * Of the newsletters, only the 2025/26 3rd Quarterly Report's link survived
+ * the crawl; the old site rendered the rest through a Wix widget whose URLs
+ * never appeared in the page HTML. The First Quarterly Edition shows "File to
+ * come" until the council supplies it (CONTENT.md §19, gap 9). The admin
+ * documents came from the council's Drive folders (see DOCUMENT_SECTIONS).
  */
 
 export type Publication = {
@@ -34,7 +34,8 @@ export const NEWSLETTER = {
 /** Newest first. */
 export const NEWSLETTER_EDITIONS: Publication[] = [
   {
-    title: 'Third Quarterly Edition',
+    title: '3rd Quarterly Report',
+    year: '2025/26',
     kind: 'Google Drive',
     href: 'https://drive.google.com/file/d/1fSRaoSrC0al0QJdr0Zle-y8nPjaP4MKk/view?usp=drivesdk',
   },

@@ -10,7 +10,7 @@ export type { CalendarEvent };
  * Set DISTRICT_CALENDAR_ICS_URL to the calendar's "Secret address in iCal
  * format" (Google Calendar → Settings → the calendar → Integrate calendar).
  * The calendar stays private: the address is a credential that lives only in
- * the server environment (Vercel), and the feed is fetched on the server and
+ * the server environment (a Cloudflare Worker secret), and the feed is fetched on the server and
  * refreshed hourly, so it never reaches a browser. Never log or render it. If
  * it leaks, reset it in the same Google setting and update the variable.
  * (A public calendar's "Public address in iCal format" also works, if a

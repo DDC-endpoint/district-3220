@@ -155,7 +155,7 @@ export function AvenuesAccordion() {
               </span>
               <span
                 id={`avenue-${a.slug}-name`}
-                className={`block font-display font-semibold tracking-[-0.015em] ${
+                className={`block item-title ${
                   isOpen ? 'md:text-[clamp(1rem,1.5vw,1.2rem)]' : 'md:text-[0.78rem] md:leading-snug'
                 } [overflow-wrap:anywhere]`}
               >

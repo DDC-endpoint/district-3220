@@ -104,7 +104,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                     href={`/news/${o.slug}`}
                     className="group flex flex-col gap-1 border-b border-hairline py-5 md:flex-row md:items-baseline md:justify-between"
                   >
-                    <span className="font-display text-[1.3rem] leading-tight font-semibold tracking-[-0.015em] transition-colors duration-200 group-hover:text-accent-text">
+                    <span className="item-title text-item transition-colors duration-200 group-hover:text-accent-text">
                       {o.shortTitle ?? o.title}
                     </span>
                     <time dateTime={o.date} className="label-micro text-content-soft">
